@@ -1,40 +1,70 @@
 "use client";
 
 import * as React from "react";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Monitor } from "lucide-react";
 import { useTheme } from "next-themes";
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+
+const themes = [
+  { value: "light", icon: Sun, label: "Light mode" },
+  { value: "system", icon: Monitor, label: "System mode" },
+  { value: "dark", icon: Moon, label: "Dark mode" },
+] as const;
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const handleThemeChange = (newTheme: string) => {
+    setTheme(newTheme);
+  };
+
+  // Evita problemas de hidratação renderizando apenas após o mount
+  if (!mounted) {
+    return (
+      <div className="flex items-center rounded-full border border-border bg-background p-1">
+        {themes.map(({ value, icon: Icon, label }) => (
+          <button
+            key={value}
+            className="cursor-pointer flex h-6 w-6 items-center justify-center rounded-full transition-all duration-200 text-muted-foreground"
+            aria-label={label}
+          >
+            <Icon className="h-3 w-3" />
+          </button>
+        ))}
+      </div>
+    );
+  }
+
+  // Garante que temos um valor válido para o tema
+  const currentTheme = theme || "system";
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex items-center rounded-full border border-border bg-background p-1">
+      {themes.map(({ value, icon: Icon, label }) => {
+        const isActive = currentTheme === value;
+
+        return (
+          <button
+            key={value}
+            onClick={() => handleThemeChange(value)}
+            className={cn(
+              "cursor-pointer flex h-6 w-6 items-center justify-center rounded-full transition-all duration-200",
+              isActive
+                ? "bg-muted text-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+            aria-label={label}
+          >
+            <Icon className="h-3 w-3" />
+          </button>
+        );
+      })}
+    </div>
   );
 }
