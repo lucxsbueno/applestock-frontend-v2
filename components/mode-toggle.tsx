@@ -27,7 +27,7 @@ export function ModeToggle() {
   // Evita problemas de hidratação renderizando apenas após o mount
   if (!mounted) {
     return (
-      <div className="flex items-center rounded-full border border-border bg-background p-1">
+      <div className="flex items-center rounded-full bg-background p-1">
         {themes.map(({ value, icon: Icon, label }) => (
           <button
             key={value}
@@ -45,7 +45,7 @@ export function ModeToggle() {
   const currentTheme = theme || "system";
 
   return (
-    <div className="flex items-center rounded-full border border-border bg-background p-1">
+    <div className="flex items-center rounded-full bg-background p-1">
       {themes.map(({ value, icon: Icon, label }) => {
         const isActive = currentTheme === value;
 
