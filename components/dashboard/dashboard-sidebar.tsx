@@ -61,10 +61,10 @@ const SidebarFooterComponent: React.FC<SidebarFooterProps> = ({ label }) => {
   const pathname = usePathname();
 
   const handleProfileClick = () => {
-    router.push("/dashboard/profile");
+    router.push("/dashboard/perfil");
   };
 
-  const isProfileActive = pathname === "/dashboard/profile";
+  const isProfileActive = pathname === "/dashboard/perfil";
 
   return (
     <SidebarFooter>
