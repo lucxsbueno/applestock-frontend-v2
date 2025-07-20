@@ -42,7 +42,7 @@ const SidebarHeaderComponent: React.FC<SidebarHeaderProps> = ({
   icon: Icon,
 }) => (
   <SidebarHeader>
-    <div className="flex items-center gap-2 px-2 py-2">
+    <div className="flex items-center gap-2 px-4 py-2 pb-0">
       <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
         <Icon className="h-4 w-4" />
       </div>
@@ -81,7 +81,7 @@ const SidebarFooterComponent: React.FC<SidebarFooterProps> = ({ label }) => {
           className={`flex flex-row p-2 border items-center gap-2 w-full rounded-lg transition-colors cursor-pointer ${
             isProfileActive
               ? "border-primary text-primary"
-              : "border-accent hover:text-accent-foreground"
+              : "border-zinc-100 dark:border-zinc-900 hover:text-accent-foreground dark:hover:bg-background"
           }`}
         >
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-semibold">
@@ -109,14 +109,48 @@ const NavigationMenu: React.FC<{
       <SidebarMenu className="px-2">
         {items.map((item) => (
           <SidebarMenuItem key={item.href}>
-            <SidebarMenuButton
-              onClick={() => onNavigate(item.href)}
-              isActive={isActiveRoute(pathname, item)}
-              className="cursor-pointer transition-colors px-4 !py-5 rounded-3xl duration-200 hover:bg-primary/10 hover:text-primary data-[active=true]:bg-primary/10 data-[active=true]:text-primary font-medium"
+            <div
+              className={`relative ${
+                isActiveRoute(pathname, item) ? "p-[2px]" : ""
+              }`}
             >
-              <item.icon className="h-4 w-4" />
-              <span>{item.title}</span>
-            </SidebarMenuButton>
+              {isActiveRoute(pathname, item) && (
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-primary to-rose-500" />
+              )}
+              <SidebarMenuButton
+                onClick={() => onNavigate(item.href)}
+                isActive={isActiveRoute(pathname, item)}
+                className={`cursor-pointer p-4 py-5 rounded-3xl hover:bg-background  hover:text-primary font-medium relative ${
+                  isActiveRoute(pathname, item)
+                    ? "text-primary"
+                    : "border-2 border-white hover:border-background dark:border-sidebar"
+                }`}
+                style={
+                  isActiveRoute(pathname, item)
+                    ? {
+                        backgroundColor: "var(--background)",
+                      }
+                    : undefined
+                }
+              >
+                <div className="flex items-center gap-3">
+                  <item.icon
+                    className={`h-4 w-4 ${
+                      isActiveRoute(pathname, item) ? "text-primary" : ""
+                    }`}
+                  />
+                  <span
+                    className={
+                      isActiveRoute(pathname, item)
+                        ? "text-primary font-semibold"
+                        : ""
+                    }
+                  >
+                    {item.title}
+                  </span>
+                </div>
+              </SidebarMenuButton>
+            </div>
           </SidebarMenuItem>
         ))}
       </SidebarMenu>
