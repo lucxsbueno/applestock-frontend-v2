@@ -2,13 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { MainSectionLayout } from "../main-section-layout";
-import {
-  DollarSign,
-  LineChart as LineChartIcon, // <-- alias the icon
-  Package,
-  ShoppingCart,
-  Truck,
-} from "lucide-react";
+import { DollarSign, Package, ShoppingCart, Truck } from "lucide-react";
 import CountUp from "react-countup";
 import {
   Card,
@@ -34,13 +28,18 @@ import {
 } from "recharts";
 
 import { mostSoldProducts, salesPerDay } from "@/mocks/mocks";
+import { useTheme } from "next-themes";
 
 export function DashboardSection() {
-  const [isMounted, setIsMounted] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null; // ou um loader
+
+  const { theme, resolvedTheme } = useTheme();
+
+  const isDark = theme === "dark" || resolvedTheme === "dark";
 
   return (
     <MainSectionLayout headerTitle="Space Phone">
@@ -119,14 +118,17 @@ export function DashboardSection() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 mt-6">
-          <Card className="col-span-4 shadow-none border-0 bg-slate-100">
+          <Card className="col-span-4 shadow-none border-0 bg-slate-100 dark:bg-card">
             <CardHeader>
               <CardTitle className="text-xl">Vendas por dia</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col justify-end h-[280px] p-0">
               <div className="w-full px-6 pb-4">
-                <div className="h-[200px] w-full flex items-end justify-center bg-muted/20 rounded-lg">
-                  {isMounted && (
+                <div
+                  className="h-[200px] w-full flex items-end justify-center rounded-lg"
+                  style={{ background: isDark ? "var(--card)" : "#f1f5f9" }}
+                >
+                  {mounted && (
                     <ResponsiveContainer width="100%" height={180}>
                       <BarChart
                         data={salesPerDay}
@@ -136,19 +138,19 @@ export function DashboardSection() {
                         <CartesianGrid
                           strokeDasharray="3 3"
                           vertical={false}
-                          stroke="#e5e7eb"
+                          stroke={isDark ? "#334155" : "#e5e7eb"}
                         />
                         <XAxis
                           dataKey="day"
                           axisLine={false}
                           tickLine={false}
-                          stroke="#64748b"
+                          stroke={isDark ? "#94a3b8" : "#64748b"}
                           fontSize={14}
                         />
                         <YAxis
                           axisLine={false}
                           tickLine={false}
-                          stroke="#64748b"
+                          stroke={isDark ? "#94a3b8" : "#64748b"}
                           fontSize={14}
                           width={60}
                           tickFormatter={(value) =>
@@ -156,12 +158,13 @@ export function DashboardSection() {
                           }
                         />
                         <Tooltip
-                          cursor={{ fill: "#f1f5f9" }}
+                          cursor={{ fill: isDark ? "#1e293b" : "#f1f5f9" }}
                           contentStyle={{
                             borderRadius: 8,
-                            background: "#fff",
+                            background: isDark ? "#1e293b" : "#fff",
                             border: "none",
                             fontSize: 14,
+                            color: isDark ? "#fff" : "#000",
                           }}
                           formatter={(value) => [
                             `R$${value.toLocaleString("pt-BR")}`,
@@ -171,7 +174,7 @@ export function DashboardSection() {
                         <Bar
                           dataKey="sales"
                           radius={[8, 8, 0, 0]}
-                          fill="#0f172a"
+                          fill={isDark ? "#38bdf8" : "#0f172a"}
                           name="sales"
                         />
                       </BarChart>
@@ -181,7 +184,7 @@ export function DashboardSection() {
               </div>
             </CardContent>
           </Card>
-          <Card className="col-span-3 shadow-none border-0 bg-slate-100">
+          <Card className="col-span-3 shadow-none border-0 bg-slate-100 dark:bg-card">
             <CardHeader>
               <CardTitle className="text-xl">Produtos mais vendidos</CardTitle>
               <CardDescription>
@@ -189,8 +192,11 @@ export function DashboardSection() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[240px] flex items-center justify-center bg-muted/20 rounded-lg">
-                {isMounted && (
+              <div
+                className="h-[240px] flex items-center justify-center rounded-lg"
+                style={{ background: isDark ? "var(--card)" : "" }}
+              >
+                {mounted && (
                   <ResponsiveContainer width="100%" height={200}>
                     <PieChart>
                       <Pie
@@ -202,29 +208,34 @@ export function DashboardSection() {
                         outerRadius={80}
                         innerRadius={48}
                         paddingAngle={4}
-                        // label={renderPieLabel}
                       >
                         {mostSoldProducts.map((entry, idx) => (
                           <Cell
                             key={`cell-${idx}`}
                             fill={entry.color}
                             fontSize="12px"
+                            stroke="0px"
                           />
                         ))}
                       </Pie>
                       <Tooltip
                         contentStyle={{
                           borderRadius: 8,
-                          background: "#fff",
+                          background: isDark ? "#1e293b" : "#fff",
                           border: "none",
                           fontSize: 12,
+                          color: isDark ? "#fff" : "#000",
                         }}
                       />
                       <Legend
                         verticalAlign="bottom"
                         height={36}
                         iconType="circle"
-                        wrapperStyle={{ fontSize: 10, paddingTop: 16 }}
+                        wrapperStyle={{
+                          fontSize: 10,
+                          paddingTop: 16,
+                          color: isDark ? "#fff" : "#000",
+                        }}
                       />
                     </PieChart>
                   </ResponsiveContainer>
@@ -234,7 +245,7 @@ export function DashboardSection() {
           </Card>
         </div>
 
-        <Card className="shadow-none border-0 bg-slate-100 w-full mt-4">
+        <Card className="shadow-none border-0 bg-slate-100 dark:bg-card w-full mt-4">
           <CardHeader>
             <CardTitle className="text-xl">Novos clientes por dia</CardTitle>
             <CardDescription>
@@ -243,8 +254,11 @@ export function DashboardSection() {
           </CardHeader>
           <CardContent className="flex flex-col justify-end h-[320px] p-0">
             <div className="w-full px-6 pb-4">
-              <div className="h-[220px] w-full flex items-end justify-center bg-muted/20 rounded-lg">
-                {isMounted && (
+              <div
+                className="h-[220px] w-full flex items-end justify-center rounded-lg"
+                style={{ background: isDark ? "var(--card)" : "#f1f5f9" }}
+              >
+                {mounted && (
                   <ResponsiveContainer width="100%" height={200}>
                     <LineChart
                       data={[
@@ -261,36 +275,37 @@ export function DashboardSection() {
                       <CartesianGrid
                         strokeDasharray="3 3"
                         vertical={false}
-                        stroke="#e5e7eb"
+                        stroke={isDark ? "#334155" : "#e5e7eb"}
                       />
                       <XAxis
                         dataKey="day"
                         axisLine={false}
                         tickLine={false}
-                        stroke="#64748b"
+                        stroke={isDark ? "#94a3b8" : "#64748b"}
                         fontSize={14}
                       />
                       <YAxis
                         axisLine={false}
                         tickLine={false}
-                        stroke="#64748b"
+                        stroke={isDark ? "#94a3b8" : "#64748b"}
                         fontSize={14}
                         width={40}
                       />
                       <Tooltip
                         contentStyle={{
                           borderRadius: 8,
-                          background: "#fff",
+                          background: isDark ? "#1e293b" : "#fff",
                           border: "none",
                           fontSize: 14,
+                          color: isDark ? "#fff" : "#000",
                         }}
                       />
                       <Line
                         type="monotone"
                         dataKey="customers"
-                        stroke="#0ea5e9"
+                        stroke={isDark ? "#38bdf8" : "#0ea5e9"}
                         strokeWidth={3}
-                        dot={{ r: 5, fill: "#0ea5e9" }}
+                        dot={{ r: 5, fill: isDark ? "#38bdf8" : "#0ea5e9" }}
                         activeDot={{ r: 7 }}
                       />
                     </LineChart>
