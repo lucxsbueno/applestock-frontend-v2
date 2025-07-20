@@ -120,7 +120,7 @@ const NavigationMenu: React.FC<{
               <SidebarMenuButton
                 onClick={() => onNavigate(item.href)}
                 isActive={isActiveRoute(pathname, item)}
-                className={`cursor-pointer p-4 py-5 rounded-3xl hover:bg-background  hover:text-primary font-medium relative ${
+                className={`cursor-pointer p-4 py-5 rounded-3xl hover:bg-background active:bg-background active:text-primary  hover:text-primary font-medium relative ${
                   isActiveRoute(pathname, item)
                     ? "text-primary"
                     : "border-2 border-white hover:border-background dark:border-sidebar"
@@ -128,7 +128,7 @@ const NavigationMenu: React.FC<{
                 style={
                   isActiveRoute(pathname, item)
                     ? {
-                        backgroundColor: "var(--background)",
+                        backgroundColor: "var(--sidebar)",
                       }
                     : undefined
                 }

@@ -1,17 +1,53 @@
 "use client";
 
-import CountUp from "react-countup";
+import { useEffect, useState } from "react";
 import { MainSectionLayout } from "../main-section-layout";
-import { DollarSign, Package, ShoppingCart, Truck } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DollarSign,
+  LineChart as LineChartIcon, // <-- alias the icon
+  Package,
+  ShoppingCart,
+  Truck,
+} from "lucide-react";
+import CountUp from "react-countup";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Line,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+  LineChart,
+} from "recharts";
+
+import { mostSoldProducts, salesPerDay } from "@/mocks/mocks";
 
 export function DashboardSection() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   return (
     <MainSectionLayout headerTitle="Space Phone">
       <div className="px-6">
         <h1 className="text-3xl font-bold tracking-tight">Olá, Lucas! 👋🏼</h1>
         <p className="text-muted-foreground text-sm mt-1">
-          Página de perfil do usuário
+          Fique por dentro das suas principais métricas
         </p>
         {/* Content */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-4">
@@ -81,6 +117,189 @@ export function DashboardSection() {
             </CardContent>
           </Card>
         </div>
+
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 mt-6">
+          <Card className="col-span-4 shadow-none border-0 bg-slate-100">
+            <CardHeader>
+              <CardTitle className="text-xl">Vendas por dia</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col justify-end h-[280px] p-0">
+              <div className="w-full px-6 pb-4">
+                <div className="h-[200px] w-full flex items-end justify-center bg-muted/20 rounded-lg">
+                  {isMounted && (
+                    <ResponsiveContainer width="100%" height={180}>
+                      <BarChart
+                        data={salesPerDay}
+                        barSize={32}
+                        style={{ fontFamily: "inherit" }}
+                      >
+                        <CartesianGrid
+                          strokeDasharray="3 3"
+                          vertical={false}
+                          stroke="#e5e7eb"
+                        />
+                        <XAxis
+                          dataKey="day"
+                          axisLine={false}
+                          tickLine={false}
+                          stroke="#64748b"
+                          fontSize={14}
+                        />
+                        <YAxis
+                          axisLine={false}
+                          tickLine={false}
+                          stroke="#64748b"
+                          fontSize={14}
+                          width={60}
+                          tickFormatter={(value) =>
+                            `R$${Math.round(value).toLocaleString("pt-BR")}`
+                          }
+                        />
+                        <Tooltip
+                          cursor={{ fill: "#f1f5f9" }}
+                          contentStyle={{
+                            borderRadius: 8,
+                            background: "#fff",
+                            border: "none",
+                            fontSize: 14,
+                          }}
+                          formatter={(value) => [
+                            `R$${value.toLocaleString("pt-BR")}`,
+                            "sales",
+                          ]}
+                        />
+                        <Bar
+                          dataKey="sales"
+                          radius={[8, 8, 0, 0]}
+                          fill="#0f172a"
+                          name="sales"
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="col-span-3 shadow-none border-0 bg-slate-100">
+            <CardHeader>
+              <CardTitle className="text-xl">Produtos mais vendidos</CardTitle>
+              <CardDescription>
+                Distribuição de vendas dos 5 produtos
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[240px] flex items-center justify-center bg-muted/20 rounded-lg">
+                {isMounted && (
+                  <ResponsiveContainer width="100%" height={200}>
+                    <PieChart>
+                      <Pie
+                        data={mostSoldProducts}
+                        dataKey="sales"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        innerRadius={48}
+                        paddingAngle={4}
+                        // label={renderPieLabel}
+                      >
+                        {mostSoldProducts.map((entry, idx) => (
+                          <Cell
+                            key={`cell-${idx}`}
+                            fill={entry.color}
+                            fontSize="12px"
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        contentStyle={{
+                          borderRadius: 8,
+                          background: "#fff",
+                          border: "none",
+                          fontSize: 12,
+                        }}
+                      />
+                      <Legend
+                        verticalAlign="bottom"
+                        height={36}
+                        iconType="circle"
+                        wrapperStyle={{ fontSize: 10, paddingTop: 16 }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="shadow-none border-0 bg-slate-100 w-full mt-4">
+          <CardHeader>
+            <CardTitle className="text-xl">Novos clientes por dia</CardTitle>
+            <CardDescription>
+              Quantidade de novos clientes cadastrados em cada dia da semana
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col justify-end h-[320px] p-0">
+            <div className="w-full px-6 pb-4">
+              <div className="h-[220px] w-full flex items-end justify-center bg-muted/20 rounded-lg">
+                {isMounted && (
+                  <ResponsiveContainer width="100%" height={200}>
+                    <LineChart
+                      data={[
+                        { day: "Seg", customers: 3 },
+                        { day: "Ter", customers: 5 },
+                        { day: "Qua", customers: 2 },
+                        { day: "Qui", customers: 6 },
+                        { day: "Sex", customers: 8 },
+                        { day: "Sáb", customers: 4 },
+                        { day: "Dom", customers: 1 },
+                      ]}
+                      style={{ fontFamily: "inherit" }}
+                    >
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        vertical={false}
+                        stroke="#e5e7eb"
+                      />
+                      <XAxis
+                        dataKey="day"
+                        axisLine={false}
+                        tickLine={false}
+                        stroke="#64748b"
+                        fontSize={14}
+                      />
+                      <YAxis
+                        axisLine={false}
+                        tickLine={false}
+                        stroke="#64748b"
+                        fontSize={14}
+                        width={40}
+                      />
+                      <Tooltip
+                        contentStyle={{
+                          borderRadius: 8,
+                          background: "#fff",
+                          border: "none",
+                          fontSize: 14,
+                        }}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="customers"
+                        stroke="#0ea5e9"
+                        strokeWidth={3}
+                        dot={{ r: 5, fill: "#0ea5e9" }}
+                        activeDot={{ r: 7 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </MainSectionLayout>
   );
