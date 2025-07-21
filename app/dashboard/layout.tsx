@@ -9,7 +9,7 @@ export default function DashboardLayout({
 }) {
   return (
     <SidebarProvider>
-      <div className="flex w-screen min-h-screen">
+      <div className="flex w-dvw min-h-dvh">
         <DashboardSidebar />
         <SidebarInset>{children}</SidebarInset>
       </div>

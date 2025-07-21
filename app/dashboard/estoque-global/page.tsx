@@ -90,7 +90,7 @@ export default function StockPage() {
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [tempFilters, setTempFilters] = useState<Filters>(filters);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(7);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
 
   const handleSheetOpenChange = (open: boolean) => {
     if (open) {
@@ -264,7 +264,7 @@ export default function StockPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-items-center gap-2">
               <Sheet
                 open={isFilterSheetOpen}
                 onOpenChange={handleSheetOpenChange}
@@ -272,7 +272,7 @@ export default function StockPage() {
                 <SheetTrigger asChild>
                   <Button
                     variant="outline"
-                    className="gap-1.5 rounded-full border-0 shadow-sm bg-card"
+                    className="cursor-pointer gap-1.5 rounded-full border-0 shadow-sm bg-card"
                   >
                     <Filter className="h-4 w-4" />
                     Filtros
@@ -446,7 +446,7 @@ export default function StockPage() {
               </Sheet>
 
               <Button
-                className="rounded-full"
+                className="cursor-pointer rounded-full font-medium"
                 onClick={() => {
                   // NProgress.start();
                   router.push("/dashboard/estoque/novo-produto");
@@ -455,16 +455,62 @@ export default function StockPage() {
                 <Plus className="h-4 w-4" />
                 Adicionar Produto
               </Button>
+
+              <div className="flex items-center justify-center">
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="cursor-pointer h-8 w-8 p-0 rounded-full hover:bg-muted/50"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
+                    disabled={currentPage === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                      (page) => (
+                        <Button
+                          key={page}
+                          variant={page === currentPage ? "default" : "ghost"}
+                          size="sm"
+                          className={`cursor-pointer h-8 w-8 p-0 rounded-full ${
+                            page === currentPage
+                              ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                              : "hover:bg-muted/50"
+                          }`}
+                          onClick={() => setCurrentPage(page)}
+                        >
+                          {page}
+                        </Button>
+                      )
+                    )}
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="cursor-pointer h-8 w-8 p-0 rounded-full hover:bg-muted/50"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                    disabled={currentPage === totalPages}
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <Card className="border-0 py-0 overflow-hidden">
           <div className="w-full overflow-x-auto">
-            <Table className="min-w-[1100px]">
+            <Table className="">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[140px]">
+                  <TableHead className="">
                     <button
                       onClick={() => handleSort("supplier" as any)}
                       className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
@@ -475,7 +521,7 @@ export default function StockPage() {
                       </span>
                     </button>
                   </TableHead>
-                  <TableHead className="w-[200px]">
+                  <TableHead className="">
                     <button
                       onClick={() => handleSort("model")}
                       className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
@@ -486,7 +532,7 @@ export default function StockPage() {
                       </span>
                     </button>
                   </TableHead>
-                  <TableHead className="w-[120px]">
+                  <TableHead className="">
                     <button
                       onClick={() => handleSort("color")}
                       className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
@@ -497,7 +543,7 @@ export default function StockPage() {
                       </span>
                     </button>
                   </TableHead>
-                  <TableHead className="w-[120px]">
+                  <TableHead className="">
                     <button
                       onClick={() => handleSort("wholesalePrice")}
                       className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
@@ -508,7 +554,7 @@ export default function StockPage() {
                       </span>
                     </button>
                   </TableHead>
-                  <TableHead className="w-[100px]">
+                  <TableHead className="">
                     <button
                       onClick={() => handleSort("battery")}
                       className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
@@ -519,7 +565,7 @@ export default function StockPage() {
                       </span>
                     </button>
                   </TableHead>
-                  <TableHead className="w-[80px]">
+                  <TableHead className="">
                     <button
                       onClick={() => handleSort("hasBox")}
                       className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
@@ -530,7 +576,7 @@ export default function StockPage() {
                       </span>
                     </button>
                   </TableHead>
-                  <TableHead className="w-[100px]">
+                  <TableHead className="">
                     <button
                       onClick={() => handleSort("sealed")}
                       className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
@@ -541,10 +587,10 @@ export default function StockPage() {
                       </span>
                     </button>
                   </TableHead>
-                  <TableHead className="w-[100px]">
+                  <TableHead className="">
                     <button
                       onClick={() => handleSort("quantity")}
-                      className="fpx-2 lex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                      className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
                     >
                       UND
                       <span className="opacity-0 group-hover:opacity-100 transition-opacity">
@@ -552,7 +598,7 @@ export default function StockPage() {
                       </span>
                     </button>
                   </TableHead>
-                  <TableHead className="w-[100px]">
+                  <TableHead className="">
                     <button
                       onClick={() => handleSort("warranty")}
                       className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
@@ -563,7 +609,7 @@ export default function StockPage() {
                       </span>
                     </button>
                   </TableHead>
-                  <TableHead className="px-2 w-[100px] text-muted-foreground text-left uppercase tracking-[1px] text-[12px] sticky right-0 bg-card z-10">
+                  <TableHead className="px-4 text-muted-foreground text-left uppercase tracking-[1px] text-[12px] sticky right-0 bg-card z-10 shadow-sm">
                     Ações
                   </TableHead>
                 </TableRow>
@@ -575,22 +621,20 @@ export default function StockPage() {
                     className="border-gray-100 dark:border-zinc-900 !text-foreground"
                   >
                     <TableCell>
-                      <span className="text-sm px-2 font-medium">
-                        {product.supplier}
-                      </span>
+                      <span className="text-sm px-2">{product.supplier}</span>
                     </TableCell>
                     <TableCell>
                       <div className="space-y-0.5 px-2 py-1">
-                        <div className="font-medium text-sm">
+                        <div className=" text-sm">
                           {product.model} {product.storage}
                         </div>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">{product.color}</span>
+                      <span className="text-sm px-2">{product.color}</span>
                     </TableCell>
                     <TableCell>
-                      <span className="px-2 font-medium text-sm">
+                      <span className="px-2 text-sm">
                         R$
                         {product.wholesalePrice.toLocaleString("pt-BR", {
                           minimumFractionDigits: 2,
@@ -608,7 +652,7 @@ export default function StockPage() {
                           <BatteryLow className="h-4 w-4 text-red-600" />
                         )}
                         <span
-                          className={`text-sm font-semibold ${
+                          className={`text-sm ${
                             product.battery >= 90
                               ? "text-green-600"
                               : product.battery >= 80
@@ -631,26 +675,28 @@ export default function StockPage() {
                     </TableCell>
                     <TableCell>
                       {product.sealed ? (
-                        <Badge className="rounded-2xl bg-green-100 text-green-800 hover:bg-green-100 text-xs">
+                        <Badge className="px-2 rounded-2xl bg-green-100 text-green-800 hover:bg-green-100 text-xs">
                           Lacrado
                         </Badge>
                       ) : (
                         <Badge
                           variant="secondary"
-                          className="rounded-2xl text-xs"
+                          className="px-2 rounded-2xl text-xs"
                         >
                           Aberto
                         </Badge>
                       )}
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">{product.quantity} un</span>
+                      <span className="px-2 text-sm">
+                        {product.quantity} un
+                      </span>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">{product.warranty}</span>
+                      <span className="px-2 text-sm">{product.warranty}</span>
                     </TableCell>
-                    <TableCell className="sticky right-0 bg-card z-10">
-                      <div className="flex items-center justify-start gap-1">
+                    <TableCell className="sticky right-0 bg-card z-10 shadow-sm">
+                      <div className="px-2 flex items-center justify-start gap-1">
                         <Button
                           variant="ghost"
                           size="sm"
@@ -681,50 +727,6 @@ export default function StockPage() {
             </Table>
           </div>
         </Card>
-
-        <div className="flex items-center justify-center mt-4">
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 p-0 rounded-full hover:bg-muted/50"
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <div className="flex items-center gap-1">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
-                  <Button
-                    key={page}
-                    variant={page === currentPage ? "default" : "ghost"}
-                    size="sm"
-                    className={`h-8 w-8 p-0 rounded-full ${
-                      page === currentPage
-                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                        : "hover:bg-muted/50"
-                    }`}
-                    onClick={() => setCurrentPage(page)}
-                  >
-                    {page}
-                  </Button>
-                )
-              )}
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 p-0 rounded-full hover:bg-muted/50"
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              disabled={currentPage === totalPages}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
       </div>
     </MainSectionLayout>
   );

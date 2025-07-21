@@ -66,6 +66,7 @@ type Filters = {
   hasBox: string;
   priceRange: [number, number];
   batteryRange: [number, number];
+  color: string;
 };
 
 const defaultFilters: Filters = {
@@ -74,6 +75,7 @@ const defaultFilters: Filters = {
   hasBox: "all",
   priceRange: [0, 15000],
   batteryRange: [0, 100],
+  color: "all",
 };
 
 export default function StockPage() {
@@ -150,13 +152,19 @@ export default function StockPage() {
       product.battery >= filters.batteryRange[0] &&
       product.battery <= filters.batteryRange[1];
 
+    const matchesColor =
+      !filters.color ||
+      filters.color === "all" ||
+      product.color === filters.color;
+
     return (
       matchesSearch &&
       matchesModel &&
       matchesSealed &&
       matchesHasBox &&
       matchesPrice &&
-      matchesBattery
+      matchesBattery &&
+      matchesColor
     );
   });
 
@@ -248,7 +256,7 @@ export default function StockPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center gap-2">
               <Sheet
                 open={isFilterSheetOpen}
                 onOpenChange={handleSheetOpenChange}
@@ -256,7 +264,7 @@ export default function StockPage() {
                 <SheetTrigger asChild>
                   <Button
                     variant="outline"
-                    className="gap-1.5 rounded-full border-0 shadow-sm bg-card"
+                    className="cursor-pointer gap-1.5 rounded-full border-0 shadow-sm bg-card"
                   >
                     <Filter className="h-4 w-4" />
                     Filtros
@@ -378,6 +386,54 @@ export default function StockPage() {
                         </Select>
                       </div>
                     </div>
+
+                    <Separator />
+
+                    <div className="grid gap-3">
+                      <Label>Cor</Label>
+                      <Select
+                        value={tempFilters.color || "all"}
+                        onValueChange={(value) =>
+                          setTempFilters((prev) => ({ ...prev, color: value }))
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Filtrar por cor" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Todas as cores</SelectItem>
+                          <SelectItem value="Titânio Natural">
+                            Titânio Natural
+                          </SelectItem>
+                          <SelectItem value="Azul Titânio">
+                            Azul Titânio
+                          </SelectItem>
+                          <SelectItem value="Cinza Espacial">
+                            Cinza Espacial
+                          </SelectItem>
+                          <SelectItem value="Preto">Preto</SelectItem>
+                          <SelectItem value="Prata">Prata</SelectItem>
+                          <SelectItem value="Rosa">Rosa</SelectItem>
+                          <SelectItem value="Titânio Branco">
+                            Titânio Branco
+                          </SelectItem>
+                          <SelectItem value="Meia-noite">Meia-noite</SelectItem>
+                          <SelectItem value="Azul">Azul</SelectItem>
+                          <SelectItem value="Titânio Azul">
+                            Titânio Azul
+                          </SelectItem>
+                          <SelectItem value="Azul Sierra">
+                            Azul Sierra
+                          </SelectItem>
+                          <SelectItem value="Verde Meia-noite">
+                            Verde Meia-noite
+                          </SelectItem>
+                          <SelectItem value="Branco">Branco</SelectItem>
+                          <SelectItem value="Dourado">Dourado</SelectItem>
+                          <SelectItem value="Grafite">Grafite</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                   <SheetFooter>
                     <Button
@@ -398,7 +454,7 @@ export default function StockPage() {
               </Sheet>
 
               <Button
-                className="rounded-full"
+                className="cursor-pointer rounded-full"
                 onClick={() => {
                   // NProgress.start();
                   router.push("/dashboard/estoque/novo-produto");
@@ -407,239 +463,262 @@ export default function StockPage() {
                 <Plus className="h-4 w-4" />
                 Adicionar Produto
               </Button>
+
+              <div className="flex items-center justify-center">
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="cursor-pointer h-8 w-8 p-0 rounded-full hover:bg-muted/50"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
+                    disabled={currentPage === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                      (page) => (
+                        <Button
+                          key={page}
+                          variant={page === currentPage ? "default" : "ghost"}
+                          size="sm"
+                          className={`cursor-pointer h-8 w-8 p-0 rounded-full ${
+                            page === currentPage
+                              ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                              : "hover:bg-muted/50"
+                          }`}
+                          onClick={() => setCurrentPage(page)}
+                        >
+                          {page}
+                        </Button>
+                      )
+                    )}
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="cursor-pointer h-8 w-8 p-0 rounded-full hover:bg-muted/50"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                    disabled={currentPage === totalPages}
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <Card className="border-0 py-0 overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[200px]">
-                  <button
-                    onClick={() => handleSort("model")}
-                    className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
-                  >
-                    Produto
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ArrowUpDown className="h-4 w-4" />
-                    </span>
-                  </button>
-                </TableHead>
-                <TableHead className="w-[120px]">
-                  <button
-                    onClick={() => handleSort("wholesalePrice")}
-                    className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
-                  >
-                    Preço
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ArrowUpDown className="h-4 w-4" />
-                    </span>
-                  </button>
-                </TableHead>
-                <TableHead className="w-[100px]">
-                  <button
-                    onClick={() => handleSort("battery")}
-                    className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
-                  >
-                    Bateria
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ArrowUpDown className="h-4 w-4" />
-                    </span>
-                  </button>
-                </TableHead>
-                <TableHead className="w-[80px]">
-                  <button
-                    onClick={() => handleSort("hasBox")}
-                    className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
-                  >
-                    Caixa
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ArrowUpDown className="h-4 w-4" />
-                    </span>
-                  </button>
-                </TableHead>
-                <TableHead className="w-[100px]">
-                  <button
-                    onClick={() => handleSort("sealed")}
-                    className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
-                  >
-                    Lacrado
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ArrowUpDown className="h-4 w-4" />
-                    </span>
-                  </button>
-                </TableHead>
-                <TableHead className="w-[80px]">
-                  <button
-                    onClick={() => handleSort("quantity")}
-                    className="fpx-2 lex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
-                  >
-                    UND
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ArrowUpDown className="h-4 w-4" />
-                    </span>
-                  </button>
-                </TableHead>
-                <TableHead className="w-[100px]">
-                  <button
-                    onClick={() => handleSort("warranty")}
-                    className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
-                  >
-                    Garantia
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ArrowUpDown className="h-4 w-4" />
-                    </span>
-                  </button>
-                </TableHead>
-                <TableHead className="px-2 w-[100px] text-muted-foreground text-left uppercase tracking-[1px] text-[12px]">
-                  Ações
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {paginatedProducts.map((product) => (
-                <TableRow
-                  key={product.id}
-                  className="border-gray-100 dark:border-zinc-900 !text-foreground"
-                >
-                  <TableCell>
-                    <div className="space-y-0.5 px-2 py-1">
-                      <div className="font-medium text-sm">
-                        {product.model} {product.storage}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {product.color}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <span className="px-2 font-medium text-sm">
-                      R$
-                      {product.wholesalePrice.toLocaleString("pt-BR", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <div className="px-2 flex items-center gap-1.5">
-                      {product.battery >= 90 ? (
-                        <BatteryFull className="h-4 w-4 text-green-600" />
-                      ) : product.battery >= 80 ? (
-                        <BatteryMedium className="h-4 w-4 text-yellow-600" />
-                      ) : (
-                        <BatteryLow className="h-4 w-4 text-red-600" />
-                      )}
-                      <span
-                        className={`text-sm font-semibold ${
-                          product.battery >= 90
-                            ? "text-green-600"
-                            : product.battery >= 80
-                            ? "text-yellow-600"
-                            : "text-red-600"
-                        }`}
-                      >
-                        {product.battery}%
+          <div className="w-full overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="">
+                    <button
+                      onClick={() => handleSort("model")}
+                      className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                    >
+                      Produto
+                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ArrowUpDown className="h-4 w-4" />
                       </span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="px-2">
-                      {product.hasBox ? (
-                        <Check className="h-4 w-4 text-green-600" />
-                      ) : (
-                        <X className="h-4 w-4 text-red-600" />
-                      )}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {product.sealed ? (
-                      <Badge className="rounded-2xl bg-green-100 text-green-800 hover:bg-green-100 text-xs">
-                        Lacrado
-                      </Badge>
-                    ) : (
-                      <Badge
-                        variant="secondary"
-                        className="rounded-2xl text-xs"
-                      >
-                        Aberto
-                      </Badge>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">{product.quantity} un</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">{product.warranty}</span>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center justify-start gap-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 w-8 p-0"
-                        onClick={() => handleCopyRow(product)}
-                      >
-                        <Copy className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
+                    </button>
+                  </TableHead>
+                  <TableHead className="">
+                    <button
+                      onClick={() => handleSort("color")}
+                      className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                    >
+                      Cor
+                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ArrowUpDown className="h-4 w-4" />
+                      </span>
+                    </button>
+                  </TableHead>
+                  <TableHead className="">
+                    <button
+                      onClick={() => handleSort("wholesalePrice")}
+                      className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                    >
+                      Preço
+                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ArrowUpDown className="h-4 w-4" />
+                      </span>
+                    </button>
+                  </TableHead>
+                  <TableHead className="">
+                    <button
+                      onClick={() => handleSort("battery")}
+                      className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                    >
+                      Bateria
+                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ArrowUpDown className="h-4 w-4" />
+                      </span>
+                    </button>
+                  </TableHead>
+                  <TableHead className="">
+                    <button
+                      onClick={() => handleSort("hasBox")}
+                      className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                    >
+                      Caixa
+                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ArrowUpDown className="h-4 w-4" />
+                      </span>
+                    </button>
+                  </TableHead>
+                  <TableHead className="">
+                    <button
+                      onClick={() => handleSort("sealed")}
+                      className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                    >
+                      Lacrado
+                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ArrowUpDown className="h-4 w-4" />
+                      </span>
+                    </button>
+                  </TableHead>
+                  <TableHead className="">
+                    <button
+                      onClick={() => handleSort("quantity")}
+                      className="fpx-2 lex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                    >
+                      UND
+                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ArrowUpDown className="h-4 w-4" />
+                      </span>
+                    </button>
+                  </TableHead>
+                  <TableHead className="">
+                    <button
+                      onClick={() => handleSort("warranty")}
+                      className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                    >
+                      Garantia
+                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ArrowUpDown className="h-4 w-4" />
+                      </span>
+                    </button>
+                  </TableHead>
+                  <TableHead className="sticky right-0 z-10 px-2 w-[100px] text-muted-foreground text-left uppercase tracking-[1px] text-[12px]">
+                    Ações
+                  </TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Card>
-
-        <div className="flex items-center justify-center mt-4">
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 p-0 rounded-full hover:bg-muted/50"
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <div className="flex items-center gap-1">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
-                  <Button
-                    key={page}
-                    variant={page === currentPage ? "default" : "ghost"}
-                    size="sm"
-                    className={`h-8 w-8 p-0 rounded-full ${
-                      page === currentPage
-                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                        : "hover:bg-muted/50"
-                    }`}
-                    onClick={() => setCurrentPage(page)}
+              </TableHeader>
+              <TableBody>
+                {paginatedProducts.map((product) => (
+                  <TableRow
+                    key={product.id}
+                    className="border-gray-100 dark:border-zinc-900 !text-foreground"
                   >
-                    {page}
-                  </Button>
-                )
-              )}
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 p-0 rounded-full hover:bg-muted/50"
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              disabled={currentPage === totalPages}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
+                    <TableCell>
+                      <div className="space-y-0.5 px-2 py-1">
+                        <div className=" text-sm">
+                          {product.model} {product.storage}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm px-2">{product.color}</span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="px-2  text-sm">
+                        R$
+                        {product.wholesalePrice.toLocaleString("pt-BR", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <div className="px-2 flex items-center gap-1.5">
+                        {product.battery >= 90 ? (
+                          <BatteryFull className="h-4 w-4 text-green-600" />
+                        ) : product.battery >= 80 ? (
+                          <BatteryMedium className="h-4 w-4 text-yellow-600" />
+                        ) : (
+                          <BatteryLow className="h-4 w-4 text-red-600" />
+                        )}
+                        <span
+                          className={`text-sm ${
+                            product.battery >= 90
+                              ? "text-green-600"
+                              : product.battery >= 80
+                              ? "text-yellow-600"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {product.battery}%
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="px-2">
+                        {product.hasBox ? (
+                          <Check className="h-4 w-4 text-green-600" />
+                        ) : (
+                          <X className="h-4 w-4 text-red-600" />
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {product.sealed ? (
+                        <Badge className="rounded-2xl bg-green-100 text-green-800 hover:bg-green-100 text-xs">
+                          Lacrado
+                        </Badge>
+                      ) : (
+                        <Badge
+                          variant="secondary"
+                          className="rounded-2xl text-xs"
+                        >
+                          Aberto
+                        </Badge>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm">{product.quantity} un</span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm">{product.warranty}</span>
+                    </TableCell>
+                    <TableCell className="sticky right-0  z-10">
+                      <div className="flex items-center justify-start gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleCopyRow(product)}
+                        >
+                          <Copy className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 w-8 p-0"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 w-8 p-0"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
-        </div>
+        </Card>
       </div>
     </MainSectionLayout>
   );
