@@ -178,9 +178,7 @@ const NavigationMenu: React.FC<{
 };
 
 // Main component
-export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
-  className,
-}) => {
+export const DashboardSidebar: React.FC<DashboardSidebarProps> = () => {
   const router = useRouter();
   const pathname = usePathname();
 

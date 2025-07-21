@@ -21,7 +21,6 @@ import {
   Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -90,7 +89,7 @@ export default function StockPage() {
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [tempFilters, setTempFilters] = useState<Filters>(filters);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(7);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
 
   const handleSheetOpenChange = (open: boolean) => {
     if (open) {
@@ -513,212 +512,204 @@ export default function StockPage() {
           </div>
         </div>
 
-        <Card className="border-0 py-0 overflow-hidden">
-          <div className="w-full overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="">
-                    <button
-                      onClick={() => handleSort("model")}
-                      className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
-                    >
-                      Produto
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ArrowUpDown className="h-4 w-4" />
-                      </span>
-                    </button>
-                  </TableHead>
-                  <TableHead className="">
-                    <button
-                      onClick={() => handleSort("color")}
-                      className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
-                    >
-                      Cor
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ArrowUpDown className="h-4 w-4" />
-                      </span>
-                    </button>
-                  </TableHead>
-                  <TableHead className="">
-                    <button
-                      onClick={() => handleSort("wholesalePrice")}
-                      className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
-                    >
-                      Preço
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ArrowUpDown className="h-4 w-4" />
-                      </span>
-                    </button>
-                  </TableHead>
-                  <TableHead className="">
-                    <button
-                      onClick={() => handleSort("battery")}
-                      className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
-                    >
-                      Bateria
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ArrowUpDown className="h-4 w-4" />
-                      </span>
-                    </button>
-                  </TableHead>
-                  <TableHead className="">
-                    <button
-                      onClick={() => handleSort("hasBox")}
-                      className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
-                    >
-                      Caixa
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ArrowUpDown className="h-4 w-4" />
-                      </span>
-                    </button>
-                  </TableHead>
-                  <TableHead className="">
-                    <button
-                      onClick={() => handleSort("sealed")}
-                      className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
-                    >
-                      Lacrado
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ArrowUpDown className="h-4 w-4" />
-                      </span>
-                    </button>
-                  </TableHead>
-                  <TableHead className="">
-                    <button
-                      onClick={() => handleSort("quantity")}
-                      className="fpx-2 lex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
-                    >
-                      UND
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ArrowUpDown className="h-4 w-4" />
-                      </span>
-                    </button>
-                  </TableHead>
-                  <TableHead className="">
-                    <button
-                      onClick={() => handleSort("warranty")}
-                      className="px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
-                    >
-                      Garantia
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ArrowUpDown className="h-4 w-4" />
-                      </span>
-                    </button>
-                  </TableHead>
-                  <TableHead className="sticky right-0 z-10 px-2 w-[100px] text-muted-foreground text-left uppercase tracking-[1px] text-[12px]">
-                    Ações
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {paginatedProducts.map((product) => (
-                  <TableRow
-                    key={product.id}
-                    className="border-gray-100 dark:border-zinc-900 !text-foreground"
+        <div className="w-full overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="">
+                  <button
+                    onClick={() => handleSort("model")}
+                    className="cursor-pointer px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
                   >
-                    <TableCell>
-                      <div className="space-y-0.5 px-2 py-1">
-                        <div className=" text-sm">
-                          {product.model} {product.storage}
-                        </div>
+                    Produto
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ArrowUpDown className="h-4 w-4" />
+                    </span>
+                  </button>
+                </TableHead>
+                <TableHead className="">
+                  <button
+                    onClick={() => handleSort("color")}
+                    className="cursor-pointer px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                  >
+                    Cor
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ArrowUpDown className="h-4 w-4" />
+                    </span>
+                  </button>
+                </TableHead>
+                <TableHead className="">
+                  <button
+                    onClick={() => handleSort("wholesalePrice")}
+                    className="cursor-pointer px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                  >
+                    Preço
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ArrowUpDown className="h-4 w-4" />
+                    </span>
+                  </button>
+                </TableHead>
+                <TableHead className="">
+                  <button
+                    onClick={() => handleSort("battery")}
+                    className="cursor-pointer px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                  >
+                    Bateria
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ArrowUpDown className="h-4 w-4" />
+                    </span>
+                  </button>
+                </TableHead>
+                <TableHead className="">
+                  <button
+                    onClick={() => handleSort("hasBox")}
+                    className="cursor-pointer px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                  >
+                    Caixa
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ArrowUpDown className="h-4 w-4" />
+                    </span>
+                  </button>
+                </TableHead>
+                <TableHead className="">
+                  <button
+                    onClick={() => handleSort("sealed")}
+                    className="cursor-pointer px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                  >
+                    Lacrado
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ArrowUpDown className="h-4 w-4" />
+                    </span>
+                  </button>
+                </TableHead>
+                <TableHead className="">
+                  <button
+                    onClick={() => handleSort("quantity")}
+                    className="cursor-pointer fpx-2 lex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                  >
+                    UND
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ArrowUpDown className="h-4 w-4" />
+                    </span>
+                  </button>
+                </TableHead>
+                <TableHead className="">
+                  <button
+                    onClick={() => handleSort("warranty")}
+                    className="cursor-pointer px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                  >
+                    Garantia
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ArrowUpDown className="h-4 w-4" />
+                    </span>
+                  </button>
+                </TableHead>
+
+                <TableHead className="sticky right-0 z-10 px-4 w-[100px] text-muted-foreground text-left uppercase tracking-[1px] text-[12px] bg-card rounded-tr-xl">
+                  Ações
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {paginatedProducts.map((product) => (
+                <TableRow
+                  key={product.id}
+                  className="border-gray-100 dark:border-zinc-900 !text-foreground"
+                >
+                  <TableCell>
+                    <div className="space-y-0.5 px-2 py-1">
+                      <div className=" text-sm">
+                        {product.model} {product.storage}
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm px-2">{product.color}</span>
-                    </TableCell>
-                    <TableCell>
-                      <span className="px-2  text-sm">
-                        R$
-                        {product.wholesalePrice.toLocaleString("pt-BR", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <div className="px-2 flex items-center gap-1.5">
-                        {product.battery >= 90 ? (
-                          <BatteryFull className="h-4 w-4 text-green-600" />
-                        ) : product.battery >= 80 ? (
-                          <BatteryMedium className="h-4 w-4 text-yellow-600" />
-                        ) : (
-                          <BatteryLow className="h-4 w-4 text-red-600" />
-                        )}
-                        <span
-                          className={`text-sm ${
-                            product.battery >= 90
-                              ? "text-green-600"
-                              : product.battery >= 80
-                              ? "text-yellow-600"
-                              : "text-red-600"
-                          }`}
-                        >
-                          {product.battery}%
-                        </span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="px-2">
-                        {product.hasBox ? (
-                          <Check className="h-4 w-4 text-green-600" />
-                        ) : (
-                          <X className="h-4 w-4 text-red-600" />
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      {product.sealed ? (
-                        <Badge className="rounded-2xl bg-green-100 text-green-800 hover:bg-green-100 text-xs">
-                          Lacrado
-                        </Badge>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm px-2">{product.color}</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="px-2  text-sm">
+                      R$
+                      {product.wholesalePrice.toLocaleString("pt-BR", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="px-2 flex items-center gap-1.5">
+                      {product.battery >= 90 ? (
+                        <BatteryFull className="h-4 w-4 text-green-600" />
+                      ) : product.battery >= 80 ? (
+                        <BatteryMedium className="h-4 w-4 text-yellow-600" />
                       ) : (
-                        <Badge
-                          variant="secondary"
-                          className="rounded-2xl text-xs"
-                        >
-                          Aberto
-                        </Badge>
+                        <BatteryLow className="h-4 w-4 text-red-600" />
                       )}
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm">{product.quantity} un</span>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm">{product.warranty}</span>
-                    </TableCell>
-                    <TableCell className="sticky right-0  z-10">
-                      <div className="flex items-center justify-start gap-1">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0"
-                          onClick={() => handleCopyRow(product)}
-                        >
-                          <Copy className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </Card>
+                      <span
+                        className={`text-sm ${
+                          product.battery >= 90
+                            ? "text-green-600"
+                            : product.battery >= 80
+                            ? "text-yellow-600"
+                            : "text-red-600"
+                        }`}
+                      >
+                        {product.battery}%
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="px-2">
+                      {product.hasBox ? (
+                        <Check className="h-4 w-4 text-green-600" />
+                      ) : (
+                        <X className="h-4 w-4 text-red-600" />
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {product.sealed ? (
+                      <Badge className="rounded-2xl bg-green-100 text-green-800 hover:bg-green-100 text-xs">
+                        Lacrado
+                      </Badge>
+                    ) : (
+                      <Badge
+                        variant="secondary"
+                        className="rounded-2xl text-xs"
+                      >
+                        Aberto
+                      </Badge>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm">{product.quantity} un</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm">{product.warranty}</span>
+                  </TableCell>
+
+                  <TableCell className="sticky right-0  z-10 bg-card">
+                    <div className="flex items-center justify-start gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 w-8 p-0"
+                        onClick={() => handleCopyRow(product)}
+                      >
+                        <Copy className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </MainSectionLayout>
   );
