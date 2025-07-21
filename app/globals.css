@@ -3,6 +3,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+body {
+  font-weight: 500;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -124,4 +128,8 @@
   html {
     font-family: "Montserrat", var(--font-montserrat), system-ui, sans-serif !important;
   }
+}
+
+#nprogress .bar {
+  background: linear-gradient(to right, #3b82f6, #f43f5e) !important;
 }

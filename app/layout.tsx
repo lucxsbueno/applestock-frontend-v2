@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
+import NProgressLoader from "@/components/nprogress-loader";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="pr-BR" suppressHydrationWarning>
       <body className={`${montserrat.variable} antialiased`}>
+        <NProgressLoader />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

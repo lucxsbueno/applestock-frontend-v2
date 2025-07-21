@@ -1,5 +1,6 @@
 "use client";
 
+import NProgress from "nprogress";
 import { useRouter, usePathname } from "next/navigation";
 import {
   Sidebar,
@@ -21,6 +22,7 @@ import {
   FOOTER_INFO,
   NAVIGATION_ITEMS,
 } from "./static/sidebar-constants";
+import { useEffect } from "react";
 
 // Types and interfaces
 interface DashboardSidebarProps {
@@ -103,60 +105,77 @@ const NavigationMenu: React.FC<{
   readonly items: readonly NavigationItem[];
   readonly pathname: string;
   readonly onNavigate: (href: string) => void;
-}> = ({ items, pathname, onNavigate }) => (
-  <SidebarGroup>
-    <SidebarGroupContent>
-      <SidebarMenu className="px-2">
-        {items.map((item) => (
-          <SidebarMenuItem key={item.href}>
-            <div
-              className={`relative ${
-                isActiveRoute(pathname, item) ? "p-[2px]" : ""
-              }`}
+}> = ({ items, pathname, onNavigate }) => {
+  const router = useRouter();
+
+  const handleNavigation = (href: string, section: string) => {
+    NProgress.start();
+    router.push(href);
+  };
+
+  return (
+    <SidebarGroup>
+      <SidebarGroupContent>
+        <SidebarMenu className="px-2">
+          {items.map((item) => (
+            <SidebarMenuItem
+              key={item.href}
+              onClick={() =>
+                handleNavigation(
+                  item.href,
+                  item.href.split("/").pop() || "dashboard"
+                )
+              }
             >
-              {isActiveRoute(pathname, item) && (
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-primary to-rose-500" />
-              )}
-              <SidebarMenuButton
-                onClick={() => onNavigate(item.href)}
-                isActive={isActiveRoute(pathname, item)}
-                className={`cursor-pointer p-4 py-5 rounded-3xl hover:bg-background active:bg-background active:text-primary  hover:text-primary font-medium relative ${
-                  isActiveRoute(pathname, item)
-                    ? "text-primary"
-                    : "border-2 border-white hover:border-background dark:border-sidebar"
+              <div
+                className={`relative ${
+                  isActiveRoute(pathname, item) ? "p-[2px]" : ""
                 }`}
-                style={
-                  isActiveRoute(pathname, item)
-                    ? {
-                        backgroundColor: "var(--sidebar)",
-                      }
-                    : undefined
-                }
               >
-                <div className="flex items-center gap-3">
-                  <item.icon
-                    className={`h-4 w-4 ${
-                      isActiveRoute(pathname, item) ? "text-primary" : ""
-                    }`}
-                  />
-                  <span
-                    className={
-                      isActiveRoute(pathname, item)
-                        ? "text-primary font-semibold"
-                        : ""
-                    }
-                  >
-                    {item.title}
-                  </span>
-                </div>
-              </SidebarMenuButton>
-            </div>
-          </SidebarMenuItem>
-        ))}
-      </SidebarMenu>
-    </SidebarGroupContent>
-  </SidebarGroup>
-);
+                {isActiveRoute(pathname, item) && (
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-primary to-rose-500" />
+                )}
+                <SidebarMenuButton
+                  onClick={() => onNavigate(item.href)}
+                  isActive={isActiveRoute(pathname, item)}
+                  className={`cursor-pointer p-4 py-5 rounded-3xl hover:bg-background active:bg-background active:text-primary  hover:text-primary font-medium relative ${
+                    isActiveRoute(pathname, item)
+                      ? "text-primary"
+                      : "border-2 border-white hover:border-background dark:border-sidebar"
+                  }`}
+                  style={
+                    isActiveRoute(pathname, item)
+                      ? {
+                          backgroundColor: "var(--sidebar)",
+                        }
+                      : undefined
+                  }
+                >
+                  <div className="flex items-center gap-3">
+                    <item.icon
+                      className={`h-4 w-4 ${
+                        isActiveRoute(pathname, item) ? "text-primary" : ""
+                      }`}
+                    />
+                    <span
+                      className={
+                        isActiveRoute(pathname, item)
+                          ? "text-primary font-semibold"
+                          : ""
+                      }
+                    >
+                      {item.title}
+                    </span>
+                  </div>
+                </SidebarMenuButton>
+              </div>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  );
+};
 
 // Main component
 export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
@@ -164,6 +183,10 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
+
+  useEffect(() => {
+    NProgress.done();
+  }, [pathname]);
 
   const handleNavigation = (href: string): void => {
     router.push(href);
