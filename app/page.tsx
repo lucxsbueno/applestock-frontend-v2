@@ -1,9 +1,5 @@
-import { ModeToggle } from "@/components/mode-toggle";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return (
-    <div className="w-full h-dvh bg-white dark:bg-zinc-900">
-      <ModeToggle />
-    </div>
-  );
+  redirect("/dashboard");
 }
