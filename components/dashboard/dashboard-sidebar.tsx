@@ -23,6 +23,7 @@ import {
   NAVIGATION_ITEMS,
 } from "./static/sidebar-constants";
 import { useEffect } from "react";
+import Image from "next/image";
 
 // Types and interfaces
 interface DashboardSidebarProps {
@@ -44,9 +45,10 @@ const SidebarHeaderComponent: React.FC<SidebarHeaderProps> = ({
   icon: Icon,
 }) => (
   <SidebarHeader>
-    <div className="flex items-center gap-2 px-4 py-2 pb-0">
+    
+    <div className="flex items-center justify-center gap-2 px-4 py-2 pb-0">
       <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-        <Icon className="h-4 w-4" />
+        <Image src="/logo-2.svg" alt="Space Phone" width={18} height={18} />
       </div>
       <div className="grid flex-1 text-left text-sm leading-tight">
         <span className="truncate font-semibold mt-1">{title}</span>
@@ -54,6 +56,7 @@ const SidebarHeaderComponent: React.FC<SidebarHeaderProps> = ({
           {subtitle}
         </span>
       </div>
+      {/* <Image src="/logo-light.svg" alt="Space Phone" width={133.17} height={31.89} /> */}
     </div>
   </SidebarHeader>
 );

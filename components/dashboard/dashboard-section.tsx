@@ -42,7 +42,7 @@ export function DashboardSection() {
   const isDark = theme === "dark" || resolvedTheme === "dark";
 
   return (
-    <MainSectionLayout headerTitle="Space Phone">
+    <MainSectionLayout headerTitle="SpacePhoneBC">
       <div className="px-6">
         <h1 className="text-3xl font-bold tracking-tight">Olá, Lucas! 👋🏼</h1>
         <p className="text-muted-foreground text-sm mt-1">

@@ -9,6 +9,8 @@ import {
   DollarSign,
   Globe,
   LucideIcon,
+  User,
+  HelpCircle,
 } from "lucide-react";
 
 // Types and interfaces
@@ -31,7 +33,7 @@ export interface SidebarFooterProps {
 
 // Constants
 export const APP_INFO: SidebarHeaderProps = {
-  title: "AppleStock",
+  title: "Space Phone",
   subtitle: "Gerenciador de Estoque",
   icon: Package2,
 } as const;
@@ -81,5 +83,10 @@ export const NAVIGATION_ITEMS: readonly NavigationItem[] = [
     title: "Configurações",
     icon: Settings,
     href: "/dashboard/configuracoes",
+  },
+  {
+    title: "Ajuda",
+    icon: HelpCircle,
+    href: "/dashboard/ajuda",
   },
 ] as const;

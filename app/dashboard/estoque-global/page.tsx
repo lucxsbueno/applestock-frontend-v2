@@ -240,7 +240,7 @@ export default function StockPage() {
   };
 
   return (
-    <MainSectionLayout headerTitle="Space Phone">
+    <MainSectionLayout headerTitle="SpacePhoneBC">
       <div className="px-6">
         <h1 className="text-3xl font-bold tracking-tight">
           Estoque dos fornecedores
