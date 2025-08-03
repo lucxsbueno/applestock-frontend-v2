@@ -132,7 +132,7 @@ const NavigationMenu: React.FC<{
             >
               <div
                 className={`relative ${
-                  isActiveRoute(pathname, item) ? "p-[2px]" : ""
+                  isActiveRoute(pathname, item) ? "p-[1.5px]" : ""
                 }`}
               >
                 {isActiveRoute(pathname, item) && (
@@ -141,7 +141,7 @@ const NavigationMenu: React.FC<{
                 <SidebarMenuButton
                   onClick={() => onNavigate(item.href)}
                   isActive={isActiveRoute(pathname, item)}
-                  className={`cursor-pointer p-4 py-5 rounded-3xl hover:bg-background active:bg-background active:text-primary  hover:text-primary font-medium relative ${
+                  className={`cursor-pointer p-3 py-4 rounded-2xl hover:bg-background active:bg-background active:text-primary  hover:text-primary font-medium relative ${
                     isActiveRoute(pathname, item)
                       ? "text-primary"
                       : "border-2 border-white hover:border-background dark:border-sidebar"
