@@ -5,12 +5,13 @@ import {
   Settings,
   BarChart3,
   Package2,
-  Users,
   DollarSign,
   Globe,
   LucideIcon,
-  User,
   HelpCircle,
+  Handshake,
+  Phone,
+  Smartphone,
 } from "lucide-react";
 
 // Types and interfaces
@@ -49,8 +50,8 @@ export const NAVIGATION_ITEMS: readonly NavigationItem[] = [
     href: "/dashboard",
   },
   {
-    title: "Meu estoque",
-    icon: Package,
+    title: "Celulares",
+    icon: Smartphone,
     href: "/dashboard/estoque",
   },
   {
@@ -60,7 +61,7 @@ export const NAVIGATION_ITEMS: readonly NavigationItem[] = [
   },
   {
     title: "Fornecedores",
-    icon: Users,
+    icon: Handshake,
     href: "/dashboard/fornecedores",
     matchPattern: "/dashboard/fornecedores",
   },

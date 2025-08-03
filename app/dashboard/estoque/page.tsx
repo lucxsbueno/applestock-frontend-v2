@@ -89,7 +89,7 @@ export default function StockPage() {
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [tempFilters, setTempFilters] = useState<Filters>(filters);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [itemsPerPage, setItemsPerPage] = useState(17);
 
   const handleSheetOpenChange = (open: boolean) => {
     if (open) {
@@ -236,9 +236,9 @@ export default function StockPage() {
   return (
     <MainSectionLayout headerTitle="SpacePhoneBC">
       <div className="px-6">
-        <h1 className="text-3xl font-bold tracking-tight">Estoque</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Celulares</h1>
         <p className="text-muted-foreground text-sm mt-1">
-          Adicione produtos e gerencie seu estoque
+          Adicione produtos e gerencie seu estoque de celulares
         </p>
       </div>
 
@@ -513,9 +513,9 @@ export default function StockPage() {
         </div>
 
         <div className="w-full overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow className="hover:bg-transparent">
+          <Table className="bg-slate-100 dark:bg-card rounded-2xl mb-4 overflow-hidden">
+            <TableHeader className="">
+              <TableRow className="bg-white dark:bg-card hover:bg-white dark:hover:bg-card !rounded-2xl">
                 <TableHead className="">
                   <button
                     onClick={() => handleSort("model")}
@@ -585,7 +585,7 @@ export default function StockPage() {
                 <TableHead className="">
                   <button
                     onClick={() => handleSort("quantity")}
-                    className="cursor-pointer fpx-2 lex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+                    className="cursor-pointer fpx-2 lex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px] flex"
                   >
                     UND
                     <span className="opacity-0 group-hover:opacity-100 transition-opacity">
@@ -614,19 +614,19 @@ export default function StockPage() {
               {paginatedProducts.map((product) => (
                 <TableRow
                   key={product.id}
-                  className="border-gray-100 dark:border-zinc-900 !text-foreground"
+                  className="!text-foreground hover:bg-slate-50 dark:hover:bg-slate-900 border-b border-dashed border-slate-200 dark:border-zinc-900"
                 >
-                  <TableCell>
+                  <TableCell contentEditable className="focus:outline focus:outline-offset focus:outline-dashed focus:outline-blue-600">
                     <div className="space-y-0.5 px-2 py-1">
                       <div className=" text-sm">
                         {product.model} {product.storage}
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell contentEditable className="border-l border-slate-200 dark:border-zinc-900 border-dashed focus:outline focus:outline-offset focus:outline-dashed focus:outline-blue-600">
                     <span className="text-sm px-2">{product.color}</span>
                   </TableCell>
-                  <TableCell>
+                  <TableCell contentEditable className="border-l border-slate-200 dark:border-zinc-900 border-dashed focus:outline focus:outline-offset focus:outline-dashed focus:outline-blue-600">
                     <span className="px-2  text-sm">
                       R$
                       {product.wholesalePrice.toLocaleString("pt-BR", {
@@ -635,7 +635,7 @@ export default function StockPage() {
                       })}
                     </span>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="border-l border-slate-200 dark:border-zinc-900 border-dashed">
                     <div className="px-2 flex items-center gap-1.5">
                       {product.battery >= 90 ? (
                         <BatteryFull className="h-4 w-4 text-green-600" />
@@ -657,7 +657,7 @@ export default function StockPage() {
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="border-l border-slate-200 dark:border-zinc-900 border-dashed">
                     <div className="px-2">
                       {product.hasBox ? (
                         <Check className="h-4 w-4 text-green-600" />
@@ -666,7 +666,7 @@ export default function StockPage() {
                       )}
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="border-l border-slate-200 dark:border-zinc-900 border-dashed focus:outline focus:outline-offset focus:outline-solid focus:outline-blue-600">
                     {product.sealed ? (
                       <Badge className="rounded-2xl bg-green-100 text-green-800 hover:bg-green-100 text-xs">
                         Lacrado
@@ -680,14 +680,14 @@ export default function StockPage() {
                       </Badge>
                     )}
                   </TableCell>
-                  <TableCell>
-                    <span className="text-sm">{product.quantity} un</span>
+                  <TableCell contentEditable className="border-l border-slate-200 dark:border-zinc-900 border-dashed focus:outline focus:outline-offset focus:outline-dashed focus:outline-blue-600">
+                    <span className="text-sm">{product.quantity}</span>
                   </TableCell>
-                  <TableCell>
+                  <TableCell contentEditable className="border-l border-slate-200 dark:border-zinc-900 border-dashed focus:outline focus:outline-offset focus:outline-dashed focus:outline-blue-600">
                     <span className="text-sm">{product.warranty}</span>
                   </TableCell>
 
-                  <TableCell className="sticky right-0  z-10 bg-card">
+                  <TableCell className="sticky right-0 z-10 bg-card">
                     <div className="flex items-center justify-start gap-1">
                       <Button
                         variant="ghost"
