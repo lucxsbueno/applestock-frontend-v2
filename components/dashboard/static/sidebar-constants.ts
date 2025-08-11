@@ -50,9 +50,10 @@ export const NAVIGATION_ITEMS: readonly NavigationItem[] = [
     href: "/dashboard",
   },
   {
-    title: "Celulares",
-    icon: Smartphone,
+    title: "Estoque",
+    icon: Package,
     href: "/dashboard/estoque",
+    matchPattern: "/dashboard/estoque",
   },
   {
     title: "Estoque global",

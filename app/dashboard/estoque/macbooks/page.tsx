@@ -75,7 +75,7 @@ const defaultFilters: Filters = {
 	color: "all",
 };
 
-export default function PhoneStockPage() {
+export default function MacBooksStockPage() {
 	const { toast } = useToast();
 	const router = useRouter();
 	const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
@@ -667,15 +667,15 @@ export default function PhoneStockPage() {
 											<Button
 												variant="ghost"
 												size="sm"
-												className="h-8 w-8 p-0 cursor-pointer"
+												className="h-8 w-8 p-0"
 												onClick={() => handleCopyRow(product)}
 											>
 												<Copy className="h-4 w-4" />
 											</Button>
-											<Button variant="ghost" size="sm" className="h-8 w-8 p-0  cursor-pointer">
+											<Button variant="ghost" size="sm" className="h-8 w-8 p-0">
 												<Edit className="h-4 w-4" />
 											</Button>
-											<Button variant="ghost" size="sm" className="h-8 w-8 p-0  cursor-pointer">
+											<Button variant="ghost" size="sm" className="h-8 w-8 p-0">
 												<Trash2 className="h-4 w-4" />
 											</Button>
 										</div>
