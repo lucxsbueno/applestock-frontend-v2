@@ -83,7 +83,7 @@ export default function SupplierDetailPage() {
 
   if (!supplier) {
     return (
-      <MainSectionLayout headerTitle="BCR">
+      <MainSectionLayout headerTitle="SpacePhoneBC">
         <div className="px-6 py-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -99,7 +99,7 @@ export default function SupplierDetailPage() {
   }
 
   return (
-    <MainSectionLayout headerTitle="BCR">
+    <MainSectionLayout headerTitle="SpacePhoneBC">
       <div className="px-6">
         <div className="flex items-center gap-4">
           <Button

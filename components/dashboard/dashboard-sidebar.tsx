@@ -8,6 +8,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -16,14 +17,16 @@ import {
 import { ModeToggle } from "@/components/mode-toggle";
 import {
   NavigationItem,
+  NavigationCategory,
   SidebarHeaderProps,
   SidebarFooterProps,
   APP_INFO,
   FOOTER_INFO,
-  NAVIGATION_ITEMS,
+  NAVIGATION_CATEGORIES,
 } from "./static/sidebar-constants";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 // Types and interfaces
 interface DashboardSidebarProps {
@@ -45,8 +48,7 @@ const SidebarHeaderComponent: React.FC<SidebarHeaderProps> = ({
   icon: Icon,
 }) => (
   <SidebarHeader>
-
-    <div className="flex items-center justify-center gap-2 px-4 py-2 pb-0">
+    <div className="flex items-center justify-center gap-2 px-3 py-2 pb-0">
       <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
         <Image src="/logo-2.svg" alt="Space Phone" width={18} height={18} />
       </div>
@@ -80,7 +82,7 @@ const SidebarFooterComponent: React.FC<SidebarFooterProps> = ({ label }) => {
         <ModeToggle />
       </div>
 
-      <div className="px-2 pb-2 ">
+      <div className="px-2 pb-2">
         <button
           onClick={handleProfileClick}
           className={`flex flex-row p-2 border items-center gap-2 w-full rounded-lg transition-colors cursor-pointer ${isProfileActive
@@ -104,75 +106,146 @@ const SidebarFooterComponent: React.FC<SidebarFooterProps> = ({ label }) => {
 };
 
 const NavigationMenu: React.FC<{
-  readonly items: readonly NavigationItem[];
+  readonly categories: readonly NavigationCategory[];
   readonly pathname: string;
   readonly onNavigate: (href: string) => void;
-}> = ({ items, pathname, onNavigate }) => {
+}> = ({ categories, pathname, onNavigate }) => {
   const router = useRouter();
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+
+  // Expande automaticamente itens que tenham subitens ativos
+  useEffect(() => {
+    const newExpandedItems = new Set<string>();
+    
+    categories.forEach(category => {
+      category.items.forEach(item => {
+        if (item.subItems) {
+          const hasActiveSubItem = item.subItems.some(subItem => 
+            isActiveRoute(pathname, subItem)
+          );
+          if (hasActiveSubItem) {
+            newExpandedItems.add(item.title);
+          }
+        }
+      });
+    });
+    
+    setExpandedItems(newExpandedItems);
+  }, [pathname, categories]);
 
   const handleNavigation = (href: string, section: string) => {
     NProgress.start();
     router.push(href);
   };
 
-  return (
-    <SidebarGroup>
-      <SidebarGroupContent>
-        <SidebarMenu className="px-2">
-          {items.map((item) => (
-            <SidebarMenuItem
-              key={item.href}
-              onClick={() =>
-                handleNavigation(
-                  item.href,
-                  item.href.split("/").pop() || "dashboard"
-                )
-              }
-            >
-              <div
-                className={`relative ${isActiveRoute(pathname, item) ? "p-[1.6px]" : ""
-                  }`}
+  const toggleExpanded = (itemTitle: string) => {
+    setExpandedItems(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(itemTitle)) {
+        newSet.delete(itemTitle);
+      } else {
+        newSet.add(itemTitle);
+      }
+      return newSet;
+    });
+  };
+
+  const isItemActive = (item: NavigationItem): boolean => {
+    if (isActiveRoute(pathname, item)) {
+      return true;
+    }
+    // Verifica se algum subitem está ativo
+    if (item.subItems) {
+      return item.subItems.some(subItem => isActiveRoute(pathname, subItem));
+    }
+    return false;
+  };
+
+  const renderMenuItem = (item: NavigationItem, isSubItem: boolean = false) => {
+    const hasSubItems = item.subItems && item.subItems.length > 0;
+    const isExpanded = expandedItems.has(item.title);
+    const isActive = isItemActive(item);
+
+    return (
+      <div key={item.href}>
+        <SidebarMenuItem
+          onClick={() => {
+            // Se tem subitens, apenas expande/colapsa; se não, navega
+            if (hasSubItems) {
+              toggleExpanded(item.title);
+            } else {
+              handleNavigation(
+                item.href,
+                item.href.split("/").pop() || "dashboard"
+              );
+            }
+          }}
+          className="px-1"
+        >
+          <SidebarMenuButton
+            isActive={isActive}
+            className={`cursor-pointer px-2 py-4 rounded-3xl hover:bg-background hover:text-primary font-medium relative ${
+              isActive
+                ? "!bg-background active:text-primary"
+                : ""
+            } ${isSubItem ? "ml-2" : ""}`}
+          >
+            <div className="flex items-center gap-3">
+              <item.icon
+                className={`h-4 w-4 ${isActive ? "text-primary" : ""}`}
+              />
+              <span
+                className={
+                  isActive
+                    ? "text-primary font-semibold"
+                    : ""
+                }
               >
-                {isActiveRoute(pathname, item) && (
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-primary to-rose-500" />
-                )}
-                <SidebarMenuButton
-                  onClick={() => onNavigate(item.href)}
-                  isActive={isActiveRoute(pathname, item)}
-                  className={`cursor-pointer p-3 py-4 rounded-3xl hover:bg-background active:bg-background active:text-primary  hover:text-primary font-medium relative ${isActiveRoute(pathname, item)
-                    ? "text-primary"
-                    : "border-2 border-white hover:border-background dark:border-sidebar"
-                    }`}
-                  style={
-                    isActiveRoute(pathname, item)
-                      ? {
-                        backgroundColor: "var(--sidebar)",
-                      }
-                      : undefined
-                  }
+                {item.title}
+              </span>
+
+              {isActive && !hasSubItems && (
+                <span className="absolute w-1 h-1 bg-blue-500 rounded-full right-5"></span>
+              )}
+
+              {hasSubItems && (
+                <div 
+                  className="absolute right-4"
                 >
-                  <div className="flex items-center gap-3">
-                    <item.icon
-                      className={`h-4 w-4 ${isActiveRoute(pathname, item) ? "text-primary" : ""
-                        }`}
-                    />
-                    <span
-                      className={
-                        isActiveRoute(pathname, item)
-                          ? "text-primary font-semibold"
-                          : ""
-                      }
-                    >
-                      {item.title}
-                    </span>
-                  </div>
-                </SidebarMenuButton>
-              </div>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarGroupContent>
-    </SidebarGroup>
+                  {isExpanded ? (
+                    <ChevronDown className={`h-3 w-3 ${isActive ? "text-primary" : ""}`} />
+                  ) : (
+                    <ChevronRight className={`h-3 w-3 ${isActive ? "text-primary" : ""}`} />
+                  )}
+                </div>
+              )}
+            </div>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+
+        {/* Renderiza subitens se o item estiver expandido */}
+        {hasSubItems && isExpanded && (
+          <div className="ml-2 mr-2">
+            {item.subItems!.map((subItem) => renderMenuItem(subItem, true))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <>
+      {categories.map((category) => (
+        <SidebarGroup key={category.label}>
+          <SidebarGroupContent>
+            <SidebarGroupLabel className="px-3">{category.label}</SidebarGroupLabel>
+            <SidebarMenu className="">
+              {category.items.map((item) => renderMenuItem(item))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      ))}
+    </>
   );
 };
 
@@ -192,9 +265,9 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = () => {
   return (
     <Sidebar>
       <SidebarHeaderComponent {...APP_INFO} />
-      <SidebarContent>
+      <SidebarContent className="gap-0">
         <NavigationMenu
-          items={NAVIGATION_ITEMS}
+          categories={NAVIGATION_CATEGORIES}
           pathname={pathname}
           onNavigate={handleNavigation}
         />

@@ -75,7 +75,7 @@ const defaultFilters: Filters = {
 	color: "all",
 };
 
-export default function PhoneStockPage() {
+export default function CelularesPage() {
 	const { toast } = useToast();
 	const router = useRouter();
 	const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
@@ -539,7 +539,7 @@ export default function PhoneStockPage() {
 								<TableHead className="">
 									<button
 										onClick={() => handleSort("hasBox")}
-										className="cursor-pointer px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group uppercase tracking-[1px] text-[12px]"
+										className="cursor-pointer px-2 flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors group-colors group uppercase tracking-[1px] text-[12px]"
 									>
 										Caixa
 										<span className="opacity-0 group-hover:opacity-100 transition-opacity">
@@ -667,15 +667,15 @@ export default function PhoneStockPage() {
 											<Button
 												variant="ghost"
 												size="sm"
-												className="h-8 w-8 p-0"
+												className="h-8 w-8 p-0 cursor-pointer"
 												onClick={() => handleCopyRow(product)}
 											>
 												<Copy className="h-4 w-4" />
 											</Button>
-											<Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+											<Button variant="ghost" size="sm" className="h-8 w-8 p-0  cursor-pointer">
 												<Edit className="h-4 w-4" />
 											</Button>
-											<Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+											<Button variant="ghost" size="sm" className="h-8 w-8 p-0  cursor-pointer">
 												<Trash2 className="h-4 w-4" />
 											</Button>
 										</div>
@@ -789,9 +789,9 @@ export default function PhoneStockPage() {
 							size="sm"
 							className="font-semibold text-xs cursor-pointer h-8 w-8 p-0 rounded-full hover:bg-muted/50"
 							onClick={() =>
-								setCurrentPage((prev) => Math.min(prev + 5, totalPages))
+								setCurrentPage((prev) => Math.min(prev + 1, totalPages))
 							}
-							disabled={currentPage >= totalPages - 4}
+							disabled={currentPage === totalPages - 4}
 						>
 							<ChevronRight className="h-4 w-4" />
 							<ChevronRight className="h-4 w-4 -ml-3" />
@@ -812,4 +812,4 @@ export default function PhoneStockPage() {
 			</div>
 		</div>
 	);
-}
+} 

@@ -10,12 +10,12 @@ export function StockTabs() {
 
 	return (
 		<div className="px-6 mt-4">
-			<div className="flex border-b border-zinc-200">
+			<div className="flex border-b border-zinc-200 dark:border-sidebar">
 				<Link
 					href="/dashboard/estoque"
 					className={cn(
 						"flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors border-b-2",
-						pathname === "/dashboard/estoque"
+						pathname === "/dashboard/estoque/celulares"
 							? "border-primary text-primary"
 							: "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground"
 					)}

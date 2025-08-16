@@ -292,8 +292,7 @@ function OrderCard({ order }: { order: Order }) {
   return (
     <Card
       className={cn(
-        "p-4 cursor-pointer transition-all duration-200 hover:shadow-md gap-0 rounded-md",
-        config.borderColor
+        `p-4 cursor-pointer gap-0 rounded-md`
       )}
     >
       <div className="flex items-start justify-between mb-3">
@@ -354,14 +353,14 @@ function OrderCard({ order }: { order: Order }) {
       </div>
 
       <div className="flex items-center gap-2 mt-3 pt-3 border-t border-muted/50">
-        <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+        <Button variant="ghost" size="sm" className="cursor-pointer h-7 w-7 p-0 hover:bg-background">
           <Eye className="h-3 w-3" />
         </Button>
-        <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+        <Button variant="ghost" size="sm" className="cursor-pointer h-7 w-7 p-0 hover:bg-background">
           <Edit className="h-3 w-3" />
         </Button>
         {order.status === "on-route" && (
-          <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+          <Button variant="ghost" size="sm" className="cursor-pointer h-7 w-7 p-0 hover:bg-background">
             <MapPin className="h-3 w-3" />
           </Button>
         )}
@@ -422,7 +421,7 @@ function KanbanColumn({
       <div className="flex items-center justify-between mb-4 flex-shrink-0 px-3 pt-3">
         <div className="flex items-center gap-2">
           <IconComponent className={cn("h-4 w-4", config.color)} />
-          <h3 className={`font-semibold text-sm ${config.color}`}>{title}</h3>
+          <h3 className={`font-semibold text-sm ${config.color} `}>{title}</h3>
         </div>
         <Badge variant="secondary" className={config.countColor}>
           {ordersCount}

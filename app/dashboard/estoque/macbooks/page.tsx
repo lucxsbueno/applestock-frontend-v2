@@ -259,7 +259,7 @@ export default function MacBooksStockPage() {
 	return (
 		<div>
 			{/* Content */}
-			<div className="px-4 mt-4">
+			<div className="px-6 mt-4">
 				<div className="space-x-4">
 					<div className="flex items-start justify-between mb-4">
 						<p className="text-muted-foreground font-normal text-sm mt-2 px-4">

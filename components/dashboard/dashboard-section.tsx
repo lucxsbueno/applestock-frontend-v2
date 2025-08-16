@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { MainSectionLayout } from "../main-section-layout";
-import { DollarSign, Package, ShoppingCart, Truck } from "lucide-react";
+import { DollarSign, Package, ShoppingCart, Truck, Search } from "lucide-react";
 import CountUp from "react-countup";
 import {
   Card,
@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import {
   Bar,
   BarChart,
@@ -29,27 +30,42 @@ import {
 
 import { mostSoldProducts, salesPerDay } from "@/mocks/mocks";
 import { useTheme } from "next-themes";
+import { SearchModal } from "../search-modal";
+import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut";
 
 export function DashboardSection() {
   const [mounted, setMounted] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { theme, resolvedTheme } = useTheme();
+
+  // Atalho de teclado ⌘K para abrir o modal de busca
+  useKeyboardShortcut('k', () => setIsSearchOpen(true), true);
 
   useEffect(() => setMounted(true), []);
 
   if (!mounted) return null; // ou um loader
 
-  const { theme, resolvedTheme } = useTheme();
-
   const isDark = theme === "dark" || resolvedTheme === "dark";
 
   return (
-    <MainSectionLayout headerTitle="SpacePhoneBC">
-      <div className="px-6">
+    <MainSectionLayout headerTitle="SpacePhoneBC" rightContent={
+      <Button 
+        variant="ghost" 
+        size="sm" 
+        className="cursor-pointer flex items-center gap-2 hover:bg-accent hover:text-accent-foreground"
+        onClick={() => setIsSearchOpen(true)}
+      >
+        <Search className="h-4 w-4" />
+        Buscar
+      </Button>
+    }>
+      <div className="px-6 pb-6">
         <h1 className="text-3xl font-bold tracking-tight">Olá, Lucas! 👋🏼</h1>
         <p className="text-muted-foreground text-sm mt-1">
           Fique por dentro das suas principais métricas
         </p>
         {/* Content */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-4">
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4 mt-4">
           <Card className="bg-blue-500 text-white border-0 shadow-none">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 text-white">
               <CardTitle className="text-sm font-medium text-white">
@@ -117,7 +133,7 @@ export function DashboardSection() {
           </Card>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 mt-6">
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-7 mt-5">
           <Card className="col-span-4 shadow-none border-0 bg-slate-100 dark:bg-card">
             <CardHeader>
               <CardTitle className="text-xl">Vendas por dia</CardTitle>
@@ -245,7 +261,7 @@ export function DashboardSection() {
           </Card>
         </div>
 
-        <Card className="shadow-none border-0 bg-slate-100 dark:bg-card w-full mt-4">
+        <Card className="shadow-none border-0 bg-slate-100 dark:bg-card w-full mt-5">
           <CardHeader>
             <CardTitle className="text-xl">Novos clientes por dia</CardTitle>
             <CardDescription>
@@ -316,6 +332,11 @@ export function DashboardSection() {
           </CardContent>
         </Card>
       </div>
+      
+      <SearchModal 
+        isOpen={isSearchOpen} 
+        onClose={() => setIsSearchOpen(false)} 
+      />
     </MainSectionLayout>
   );
 }

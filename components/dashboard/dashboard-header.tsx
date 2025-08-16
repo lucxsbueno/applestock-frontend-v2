@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { Bell, User, Settings, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -18,9 +18,10 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 
 interface Props {
   title: string;
+  rightContent?: ReactNode;
 }
 
-export function DashboardHeader({ title }: Props) {
+export function DashboardHeader({ title, rightContent }: Props) {
   const router = useRouter();
 
   const handleLogout = () => {
@@ -36,7 +37,8 @@ export function DashboardHeader({ title }: Props) {
           <h1 className="text-lg font-semibold">{title}</h1>
         </div>
         <div className="flex items-center gap-2">
-          <DropdownMenu>
+          {rightContent}
+          {/* <DropdownMenu>
             <DropdownMenuContent className="w-56" align="end" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
@@ -65,7 +67,7 @@ export function DashboardHeader({ title }: Props) {
                 <span>Sair</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
         </div>
       </div>
     </header>

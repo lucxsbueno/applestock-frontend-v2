@@ -6,12 +6,18 @@ import {
   BarChart3,
   Package2,
   DollarSign,
-  Globe,
   LucideIcon,
   HelpCircle,
   Handshake,
   Phone,
   Smartphone,
+  Building2,
+  TrendingUp,
+  Users,
+  FileText,
+  MapPin,
+  Shield,
+  Laptop,
 } from "lucide-react";
 
 // Types and interfaces
@@ -20,6 +26,12 @@ export interface NavigationItem {
   readonly icon: LucideIcon;
   readonly href: string;
   readonly matchPattern?: string;
+  readonly subItems?: readonly NavigationItem[];
+}
+
+export interface NavigationCategory {
+  readonly label: string;
+  readonly items: readonly NavigationItem[];
 }
 
 export interface SidebarHeaderProps {
@@ -43,52 +55,266 @@ export const FOOTER_INFO: SidebarFooterProps = {
   label: "Mode",
 } as const;
 
-export const NAVIGATION_ITEMS: readonly NavigationItem[] = [
+export const NAVIGATION_CATEGORIES: readonly NavigationCategory[] = [
   {
-    title: "Dashboard",
-    icon: BarChart3,
-    href: "/dashboard",
+    label: "Visão Geral",
+    items: [
+      {
+        title: "Dashboard",
+        icon: BarChart3,
+        href: "/dashboard",
+      },
+      {
+        title: "Relatórios",
+        icon: BarChart3,
+        href: "/dashboard/relatorios",
+        matchPattern: "/dashboard/relatorios",
+        subItems: [
+          {
+            title: "Vendas",
+            icon: TrendingUp,
+            href: "/dashboard/relatorios/vendas",
+            matchPattern: "/dashboard/relatorios/vendas",
+          },
+          {
+            title: "Estoque",
+            icon: Package,
+            href: "/dashboard/relatorios/estoque",
+            matchPattern: "/dashboard/relatorios/estoque",
+          },
+          {
+            title: "Financeiro",
+            icon: DollarSign,
+            href: "/dashboard/relatorios/financeiro",
+            matchPattern: "/dashboard/relatorios/financeiro",
+          },
+        ],
+      },
+    ],
   },
   {
-    title: "Estoque",
-    icon: Package,
-    href: "/dashboard/estoque",
-    matchPattern: "/dashboard/estoque",
+    label: "Gestão de Estoque",
+    items: [
+      {
+        title: "Estoque",
+        icon: Package,
+        href: "/dashboard/estoque",
+        matchPattern: "/dashboard/estoque",
+        subItems: [
+          {
+            title: "Celulares",
+            icon: Smartphone,
+            href: "/dashboard/estoque/celulares",
+            matchPattern: "/dashboard/estoque/celulares",
+          },
+          {
+            title: "MacBooks",
+            icon: Laptop,
+            href: "/dashboard/estoque/macbooks",
+            matchPattern: "/dashboard/estoque/macbooks",
+          },
+          {
+            title: "Produtos",
+            icon: Package,
+            href: "/dashboard/estoque/produtos",
+            matchPattern: "/dashboard/estoque/produtos",
+          },
+          {
+            title: "Categorias",
+            icon: Package2,
+            href: "/dashboard/estoque/categorias",
+            matchPattern: "/dashboard/estoque/categorias",
+          },
+          {
+            title: "Movimentações",
+            icon: TrendingUp,
+            href: "/dashboard/estoque/movimentacoes",
+            matchPattern: "/dashboard/estoque/movimentacoes",
+          },
+        ],
+      },
+      {
+        title: "Fornecedores",
+        icon: Handshake,
+        href: "/dashboard/fornecedores",
+        matchPattern: "/dashboard/fornecedores",
+      },
+    ],
   },
   {
-    title: "Estoque global",
-    icon: Globe,
-    href: "/dashboard/estoque-global",
+    label: "Comercial",
+    items: [
+      {
+        title: "Vendas",
+        icon: ShoppingCart,
+        href: "/dashboard/vendas",
+        matchPattern: "/dashboard/vendas",
+        subItems: [
+          {
+            title: "Pedidos",
+            icon: ShoppingCart,
+            href: "/dashboard/pedidos",
+            matchPattern: "/dashboard/pedidos",
+          },
+          {
+            title: "Orçamentos",
+            icon: FileText,
+            href: "/dashboard/vendas/orcamentos",
+            matchPattern: "/dashboard/vendas/orcamentos",
+          },
+          {
+            title: "Clientes",
+            icon: Users,
+            href: "/dashboard/vendas/clientes",
+            matchPattern: "/dashboard/vendas/clientes",
+          },
+        ],
+      },
+      {
+        title: "Equipe",
+        icon: Users,
+        href: "/dashboard/equipe",
+        matchPattern: "/dashboard/equipe",
+        subItems: [
+          {
+            title: "Vendedores",
+            icon: Users,
+            href: "/dashboard/equipe/vendedores",
+            matchPattern: "/dashboard/equipe/vendedores",
+          },
+          {
+            title: "Comissões",
+            icon: DollarSign,
+            href: "/dashboard/equipe/comissoes",
+            matchPattern: "/dashboard/equipe/comissoes",
+          },
+        ],
+      },
+    ],
   },
   {
-    title: "Fornecedores",
-    icon: Handshake,
-    href: "/dashboard/fornecedores",
-    matchPattern: "/dashboard/fornecedores",
+    label: "Logística",
+    items: [
+      {
+        title: "Entregas",
+        icon: Truck,
+        href: "/dashboard/entregas",
+        matchPattern: "/dashboard/entregas",
+        subItems: [
+          {
+            title: "Rastreamento",
+            icon: Truck,
+            href: "/dashboard/entregas/rastreamento",
+            matchPattern: "/dashboard/entregas/rastreamento",
+          },
+          {
+            title: "Rotas",
+            icon: MapPin,
+            href: "/dashboard/entregas/rotas",
+            matchPattern: "/dashboard/entregas/rotas",
+          },
+        ],
+      },
+      {
+        title: "Compras",
+        icon: Package,
+        href: "/dashboard/compras",
+        matchPattern: "/dashboard/compras",
+        subItems: [
+          {
+            title: "Solicitações",
+            icon: FileText,
+            href: "/dashboard/compras/solicitacoes",
+            matchPattern: "/dashboard/compras/solicitacoes",
+          },
+          {
+            title: "Cotações",
+            icon: DollarSign,
+            href: "/dashboard/compras/cotacoes",
+            matchPattern: "/dashboard/compras/cotacoes",
+          },
+        ],
+      },
+    ],
   },
   {
-    title: "Pedidos",
-    icon: ShoppingCart,
-    href: "/dashboard/pedidos",
-  },
-  {
-    title: "Entregas",
-    icon: Truck,
-    href: "/dashboard/entregas",
-  },
-  {
-    title: "Financeiro",
-    icon: DollarSign,
-    href: "/dashboard/financeiro",
-  },
-  {
-    title: "Configurações",
-    icon: Settings,
-    href: "/dashboard/configuracoes",
-  },
-  {
-    title: "Ajuda",
-    icon: HelpCircle,
-    href: "/dashboard/ajuda",
+    label: "Administração",
+    items: [
+      {
+        title: "Financeiro",
+        icon: DollarSign,
+        href: "/dashboard/financeiro",
+        matchPattern: "/dashboard/financeiro",
+        subItems: [
+          {
+            title: "Contas a Pagar",
+            icon: DollarSign,
+            href: "/dashboard/financeiro/contas-pagar",
+            matchPattern: "/dashboard/financeiro/contas-pagar",
+          },
+          {
+            title: "Contas a Receber",
+            icon: DollarSign,
+            href: "/dashboard/financeiro/contas-receber",
+            matchPattern: "/dashboard/financeiro/contas-receber",
+          },
+          {
+            title: "Fluxo de Caixa",
+            icon: TrendingUp,
+            href: "/dashboard/financeiro/fluxo-caixa",
+            matchPattern: "/dashboard/financeiro/fluxo-caixa",
+          },
+        ],
+      },
+      {
+        title: "Configurações",
+        icon: Settings,
+        href: "/dashboard/configuracoes",
+        matchPattern: "/dashboard/configuracoes",
+        subItems: [
+          {
+            title: "Usuários",
+            icon: Users,
+            href: "/dashboard/configuracoes/usuarios",
+            matchPattern: "/dashboard/configuracoes/usuarios",
+          },
+          {
+            title: "Perfis",
+            icon: Shield,
+            href: "/dashboard/configuracoes/perfis",
+            matchPattern: "/dashboard/configuracoes/perfis",
+          },
+          {
+            title: "Sistema",
+            icon: Settings,
+            href: "/dashboard/configuracoes/sistema",
+            matchPattern: "/dashboard/configuracoes/sistema",
+          },
+        ],
+      },
+      {
+        title: "Ajuda",
+        icon: HelpCircle,
+        href: "/dashboard/ajuda",
+        matchPattern: "/dashboard/ajuda",
+        subItems: [
+          {
+            title: "Documentação",
+            icon: FileText,
+            href: "/dashboard/ajuda/documentacao",
+            matchPattern: "/dashboard/ajuda/documentacao",
+          },
+          {
+            title: "Suporte",
+            icon: HelpCircle,
+            href: "/dashboard/ajuda/suporte",
+            matchPattern: "/dashboard/ajuda/suporte",
+          },
+        ],
+      },
+    ],
   },
 ] as const;
+
+// Mantém compatibilidade com código existente
+export const NAVIGATION_ITEMS: readonly NavigationItem[] = NAVIGATION_CATEGORIES.flatMap(category => category.items);
