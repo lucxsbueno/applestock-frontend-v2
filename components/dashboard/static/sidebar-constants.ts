@@ -102,7 +102,7 @@ export const NAVIGATION_CATEGORIES: readonly NavigationCategory[] = [
         matchPattern: "/dashboard/estoque",
         subItems: [
           {
-            title: "Celulares",
+            title: "iPhones",
             icon: Smartphone,
             href: "/dashboard/estoque/celulares",
             matchPattern: "/dashboard/estoque/celulares",
@@ -112,6 +112,12 @@ export const NAVIGATION_CATEGORIES: readonly NavigationCategory[] = [
             icon: Laptop,
             href: "/dashboard/estoque/macbooks",
             matchPattern: "/dashboard/estoque/macbooks",
+          },
+          {
+            title: "Celulares",
+            icon: Smartphone,
+            href: "/dashboard/estoque/celulares",
+            matchPattern: "/dashboard/estoque/celulares",
           },
           {
             title: "Produtos",
@@ -157,12 +163,6 @@ export const NAVIGATION_CATEGORIES: readonly NavigationCategory[] = [
             matchPattern: "/dashboard/pedidos",
           },
           {
-            title: "Orçamentos",
-            icon: FileText,
-            href: "/dashboard/vendas/orcamentos",
-            matchPattern: "/dashboard/vendas/orcamentos",
-          },
-          {
             title: "Clientes",
             icon: Users,
             href: "/dashboard/vendas/clientes",
@@ -177,17 +177,11 @@ export const NAVIGATION_CATEGORIES: readonly NavigationCategory[] = [
         matchPattern: "/dashboard/equipe",
         subItems: [
           {
-            title: "Vendedores",
+            title: "Perfis e Acessos",
             icon: Users,
-            href: "/dashboard/equipe/vendedores",
-            matchPattern: "/dashboard/equipe/vendedores",
-          },
-          {
-            title: "Comissões",
-            icon: DollarSign,
-            href: "/dashboard/equipe/comissoes",
-            matchPattern: "/dashboard/equipe/comissoes",
-          },
+            href: "/dashboard/equipe/perfis-e-acessos",
+            matchPattern: "/dashboard/equipe/perfis-e-acessos",
+          }
         ],
       },
     ],

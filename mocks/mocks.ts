@@ -3300,4 +3300,178 @@ const suppliers: Supplier[] = [
   ...generateReputationData(s.id)
 }));
 
-export { salesPerDay, mostSoldProducts, stockData, globalStockData, suppliers };
+type Order = {
+  id: string;
+  customer: string;
+  products: string;
+  address: string;
+  payment: string;
+  date: string;
+  status: "delivered" | "on-route" | "pending" | "cancelled" | "processing";
+  value?: number;
+  installments?: {
+    count: number;
+    value: number;
+  };
+};
+
+const initialOrders: Order[] = [
+  {
+    id: "PED-001",
+    customer: "João Silva",
+    products: "iPhone 15 Pro Max 256GB",
+    address: "Rua das Flores, 123 - Itapema",
+    payment: "Pix",
+    date: "2024-04-15 09:15",
+    status: "delivered",
+    value: 7845.32,
+  },
+  {
+    id: "PED-002",
+    customer: "Maria Santos",
+    products: "MacBook Air M2 512GB",
+    address: "Av. Paulista, 1000 - Itajaí",
+    payment: "Cartão",
+    date: "2024-05-22 11:30",
+    status: "on-route",
+    value: 10530.55,
+    installments: { count: 10, value: 1053.06 },
+  },
+  {
+    id: "PED-003",
+    customer: "Pedro Costa",
+    products: "iPhone 15 Pro 128GB",
+    address: "Rua Augusta, 500 - Balneario Camboriu",
+    payment: "Dinheiro",
+    date: "2024-01-15 18:20",
+    status: "cancelled",
+    value: 6923.32,
+  },
+  {
+    id: "PED-004",
+    customer: "Ana Costa",
+    products: 'iPad Pro 12.9"',
+    address: "Rua Oscar Freire, 200 - São Paulo",
+    payment: "Pix",
+    date: "2024-01-17 09:20",
+    status: "processing",
+    value: 14523.67,
+  },
+  {
+    id: "PED-005",
+    customer: "Carlos Mendes",
+    products: "Apple Watch Series 9",
+    address: "Av. Brigadeiro Faria Lima, 1500 - São Paulo",
+    payment: "Cartão",
+    date: "2024-01-17 16:30",
+    status: "cancelled",
+    value: 3501.54,
+    installments: { count: 2, value: 1750.77 },
+  },
+  {
+    id: "PED-006",
+    customer: "Juliana Lima",
+    products: "iPhone 15 128GB",
+    address: "Rua Haddock Lobo, 400 - São Paulo",
+    payment: "Pix",
+    date: "2024-01-18 11:45",
+    status: "on-route",
+    value: 5845.32,
+  },
+  {
+    id: "PED-007",
+    customer: "Roberto Alves",
+    products: 'MacBook Pro 16" M3 Pro',
+    address: "Av. Rebouças, 800 - São Paulo",
+    payment: "Cartão",
+    date: "2024-01-18 14:15",
+    status: "pending",
+    value: 18530.55,
+    installments: { count: 12, value: 1544.21 },
+  },
+  {
+    id: "PED-008",
+    customer: "Fernanda Martins",
+    products: "AirPods Max",
+    address: "Rua Bela Cintra, 300 - São Paulo",
+    payment: "Dinheiro",
+    date: "2024-01-19 10:30",
+    status: "processing",
+    value: 4501.54,
+  },
+  {
+    id: "PED-009",
+    customer: "Lucas Souza",
+    products: "iPad Air 5",
+    address: "Av. Berrini, 1200 - São Paulo",
+    payment: "Pix",
+    date: "2024-01-19 15:20",
+    status: "delivered",
+    value: 5845.32,
+  },
+  {
+    id: "PED-010",
+    customer: "Patrícia Gomes",
+    products: "Apple Watch Ultra 2",
+    address: "Rua da Consolação, 600 - São Paulo",
+    payment: "Cartão",
+    date: "2024-01-20 09:45",
+    status: "on-route",
+    value: 8501.54,
+    installments: { count: 6, value: 1416.92 },
+  },
+  {
+    id: "PED-011",
+    customer: "Rafael Costa",
+    products: "iPhone 15 Pro 512GB",
+    address: "Av. Morumbi, 2000 - São Paulo",
+    payment: "Pix",
+    date: "2024-01-20 13:15",
+    status: "cancelled",
+    value: 8923.32,
+  },
+  {
+    id: "PED-012",
+    customer: "Beatriz Santos",
+    products: "MacBook Air M3",
+    address: "Rua Estados Unidos, 100 - São Paulo",
+    payment: "Dinheiro",
+    date: "2024-01-21 11:30",
+    status: "processing",
+    value: 11530.55,
+  },
+  {
+    id: "PED-013",
+    customer: "Gabriel Oliveira",
+    products: "AirPods Pro 2 + AppleCare+",
+    address: "Av. Jabaquara, 1500 - São Paulo",
+    payment: "Cartão",
+    date: "2024-01-21 16:45",
+    status: "delivered",
+    value: 2501.54,
+    installments: { count: 3, value: 833.85 },
+  },
+  {
+    id: "PED-014",
+    customer: "Mariana Lima",
+    products: 'iPad Pro 11" + Apple Pencil',
+    address: "Rua Pamplona, 300 - São Paulo",
+    payment: "Pix",
+    date: "2024-01-22 10:20",
+    status: "on-route",
+    value: 12523.67,
+  },
+  {
+    id: "PED-015",
+    customer: "Thiago Mendes",
+    products: "Apple Watch Series 9 + AppleCare+",
+    address: "Av. São João, 800 - São Paulo",
+    payment: "Cartão",
+    date: "2024-01-22 14:30",
+    status: "pending",
+    value: 4001.54,
+    installments: { count: 4, value: 1000.39 },
+  },
+];
+
+export { salesPerDay, mostSoldProducts, stockData, globalStockData, suppliers, initialOrders };

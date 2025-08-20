@@ -1,12 +1,12 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { MainSectionLayout } from "@/components/main-section-layout";
+import { MainSectionLayoutWithBack } from "@/components/main-section-layout-with-back";
 import { suppliers } from "@/mocks/mocks";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Package, Calendar, MapPin, Mail, Phone, Globe, ArrowLeft } from "lucide-react";
+import { Package, Calendar, MapPin, Mail, Phone, Globe } from "lucide-react";
 
 // Função utilitária para pegar as iniciais do nome
 function getInitials(name: string) {
@@ -83,7 +83,7 @@ export default function SupplierDetailPage() {
 
   if (!supplier) {
     return (
-      <MainSectionLayout headerTitle="SpacePhoneBC">
+      <MainSectionLayoutWithBack headerTitle="SpacePhoneBC">
         <div className="px-6 py-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -94,22 +94,14 @@ export default function SupplierDetailPage() {
             </p>
           </div>
         </div>
-      </MainSectionLayout>
+      </MainSectionLayoutWithBack>
     );
   }
 
   return (
-    <MainSectionLayout headerTitle="SpacePhoneBC">
+    <MainSectionLayoutWithBack headerTitle="Detalhes do fornecedor">
       <div className="px-6">
         <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => router.back()}
-            className="h-10 w-10 p-0 hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
           <div>
             <h1 className="text-3xl font-bold tracking-tight">{supplier.name}</h1>
             <p className="text-muted-foreground text-sm font-normal mt-1">
@@ -283,6 +275,6 @@ export default function SupplierDetailPage() {
           </div>
         </div>
       </div>
-    </MainSectionLayout>
+    </MainSectionLayoutWithBack>
   );
 } 

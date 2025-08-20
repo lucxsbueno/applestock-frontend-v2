@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import NProgress from "nprogress";
+import { usePathname, useRouter } from "next/navigation";
 
 import { MainSectionLayout } from "@/components/main-section-layout";
 
@@ -91,6 +93,8 @@ function getReputationColor(reputation: number): string {
 
 export default function SuppliersPage() {
   const { toast } = useToast();
+  const router = useRouter();
+  const pathname = usePathname();
   // Adicionar estado para favoritedSuppliers
   const [favoritedSuppliers, setFavoritedSuppliers] = useState<{
     [id: string]: boolean;
@@ -103,6 +107,15 @@ export default function SuppliersPage() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+
+  useEffect(() => {
+    NProgress.done();
+  }, [pathname]);
+
+  const handleNavigation = (href: string) => {
+    NProgress.start();
+    router.push(href);
+  };
 
   return (
     <MainSectionLayout headerTitle="SpacePhoneBC" rightContent={
@@ -172,9 +185,10 @@ export default function SuppliersPage() {
               return 0;
             })
             .map((supplier) => (
-              <Link key={supplier.id} href={`/dashboard/fornecedores/${supplier.username}`}>
+             
                 <Card
                   className="cursor-pointer gap-3 py-4 transition-transform duration-200 hover:scale-102"
+                  onClick={() => handleNavigation(`/dashboard/fornecedores/${supplier.username}`)}
                 >
                   <CardHeader className="px-4 w-full">
                     <div className="flex items-start justify-between w-full">
@@ -379,7 +393,7 @@ export default function SuppliersPage() {
                     </div>
                   </CardFooter>
                 </Card>
-              </Link>
+           
             ))}
         </div>
 

@@ -33,7 +33,7 @@ export default function RootLayout({
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <meta name="theme-color" content="#ffffff" />
       </head>
-      <body className={`${montserrat.variable} antialiased`}>
+      <body className={`${montserrat.variable} antialiased`} cz-shortcut-listen="true">
         <NProgressLoader />
         <ThemeProvider
           attribute="class"

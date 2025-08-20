@@ -31,7 +31,9 @@ export function DashboardHeader({ title, rightContent }: Props) {
   return (
     <header className="flex h-14 shrink-0 items-center gap-2 px-4 py-4">
       <SidebarTrigger className="-ml-1 cursor-pointer" />
-      <Separator orientation="vertical" className="mr-2 h-4" />
+      <div className="h-5">
+      <Separator orientation="vertical" className="mr-2" />
+      </div>
       <div className="flex flex-1 items-center justify-between">
         <div className="flex items-center gap-2">
           <h1 className="text-lg font-semibold">{title}</h1>

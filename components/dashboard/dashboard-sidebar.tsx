@@ -133,7 +133,7 @@ const NavigationMenu: React.FC<{
     setExpandedItems(newExpandedItems);
   }, [pathname, categories]);
 
-  const handleNavigation = (href: string, section: string) => {
+  const handleNavigation = (href: string) => {
     NProgress.start();
     router.push(href);
   };
@@ -174,10 +174,7 @@ const NavigationMenu: React.FC<{
             if (hasSubItems) {
               toggleExpanded(item.title);
             } else {
-              handleNavigation(
-                item.href,
-                item.href.split("/").pop() || "dashboard"
-              );
+              handleNavigation(item.href);
             }
           }}
           className="px-1"
