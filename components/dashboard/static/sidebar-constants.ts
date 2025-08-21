@@ -97,47 +97,9 @@ export const NAVIGATION_CATEGORIES: readonly NavigationCategory[] = [
     items: [
       {
         title: "Estoque",
-        icon: Package,
+        icon: Package2,
         href: "/dashboard/estoque",
         matchPattern: "/dashboard/estoque",
-        subItems: [
-          {
-            title: "iPhones",
-            icon: Smartphone,
-            href: "/dashboard/estoque/celulares",
-            matchPattern: "/dashboard/estoque/celulares",
-          },
-          {
-            title: "MacBooks",
-            icon: Laptop,
-            href: "/dashboard/estoque/macbooks",
-            matchPattern: "/dashboard/estoque/macbooks",
-          },
-          {
-            title: "Celulares",
-            icon: Smartphone,
-            href: "/dashboard/estoque/celulares",
-            matchPattern: "/dashboard/estoque/celulares",
-          },
-          {
-            title: "Produtos",
-            icon: Package,
-            href: "/dashboard/estoque/produtos",
-            matchPattern: "/dashboard/estoque/produtos",
-          },
-          {
-            title: "Categorias",
-            icon: Package2,
-            href: "/dashboard/estoque/categorias",
-            matchPattern: "/dashboard/estoque/categorias",
-          },
-          {
-            title: "Movimentações",
-            icon: TrendingUp,
-            href: "/dashboard/estoque/movimentacoes",
-            matchPattern: "/dashboard/estoque/movimentacoes",
-          },
-        ],
       },
       {
         title: "Fornecedores",

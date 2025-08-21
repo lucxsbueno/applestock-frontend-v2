@@ -186,8 +186,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-2xl p-0 gap-0 border-0" showCloseButton={false}>
-        <DialogHeader className="p-4 border-b border-slate-200/50 dark:border-sidebar">
+      <DialogContent className="sm:max-w-2xl p-0 gap-0 border-0 bg-sidebar" showCloseButton={false}>
+        <DialogHeader className="p-4 border-b border-slate-200/50 dark:border-zinc-800/50">
           <DialogTitle className="sr-only">Pesquisa rápida</DialogTitle>
           <div className="flex items-center gap-3">
             <div className="h-8 w-8 shrink-0 flex flex-row items-center justify-center">
@@ -221,16 +221,16 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 Digite para buscar produtos, pedidos, clientes e mais
               </p>
               <div className="flex flex-wrap gap-2 justify-center">
-                <Badge variant="secondary" className="text-xs bg-slate-200/50 dark:bg-sidebar">
+                <Badge variant="secondary" className="text-xs bg-slate-200/50 dark:bg-zinc-800/50">
                   ⌘K
                 </Badge>
-                <Badge variant="secondary" className="text-xs bg-slate-200/50 dark:bg-sidebar">
+                <Badge variant="secondary" className="text-xs bg-slate-200/50 dark:bg-zinc-800/50">
                   ↑↓ Navegar
                 </Badge>
-                <Badge variant="secondary" className="text-xs bg-slate-200/50 dark:bg-sidebar">
+                <Badge variant="secondary" className="text-xs bg-slate-200/50 dark:bg-zinc-800/50">
                   Enter Selecionar
                 </Badge>
-                <Badge variant="secondary" className="text-xs bg-slate-200/50 dark:bg-sidebar">
+                <Badge variant="secondary" className="text-xs bg-slate-200/50 dark:bg-zinc-800/50">
                   Esc Fechar
                 </Badge>
               </div>
@@ -254,8 +254,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 <div
                   key={result.id}
                   className={`px-6 py-3 cursor-pointer transition-colors ${index === selectedIndex
-                      ? "bg-card"
-                      : "hover:bg-card/50"
+                      ? "bg-background/50"
+                      : "hover:bg-background/50"
                     }`}
                   onClick={() => handleResultClick(result)}
                 >
@@ -293,7 +293,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
         </div>
 
         {results.length > 0 && (
-          <div className="px-6 py-3 border-t dark:border-t-sidebar bg-sidebar rounded-b-lg text-xs text-muted-foreground">
+          <div className="px-6 py-3 border-t border-background dark:border-zinc-800/50 bg-sidebar rounded-b-lg text-xs text-muted-foreground">
             <div className="flex items-center justify-between">
               <span>{results.length} resultado{results.length !== 1 ? 's' : ''} encontrado{results.length !== 1 ? 's' : ''}</span>
               <div className="flex items-center gap-4">

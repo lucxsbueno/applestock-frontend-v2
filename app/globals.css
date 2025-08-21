@@ -133,3 +133,26 @@ body {
 #nprogress .bar {
   background: linear-gradient(to right, #3b82f6, #f43f5e) !important;
 }
+
+@layer components {
+  /* Estilos para coluna sticky na tabela de estoque */
+  .sticky-table th:last-child,
+  .sticky-table td:last-child {
+    @apply sticky right-0 bg-sidebar;
+  }
+  
+  .sticky-table th:last-child {
+    @apply h-fit;
+  }
+  
+  /* Coluna de imagem com tamanho fixo */
+  .sticky-table th:first-child,
+  .sticky-table td:first-child {
+    @apply w-[40px] p-0;
+  }
+  
+  /* Container da imagem sem padding extra */
+  .sticky-table td:first-child > div {
+    @apply w-10 h-10 flex items-center justify-center;
+  }
+}
